@@ -1,0 +1,14 @@
+{
+  "name": "koa-blog",
+  "watch": [
+    "server"
+  ],
+  "script": "server/app.js",
+  "log_date_format": "YYYY-MM-DD HH:mm Z",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "env_dev": {
+    "NODE_ENV": "development"
+  }
+}

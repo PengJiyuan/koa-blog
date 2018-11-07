@@ -34,7 +34,6 @@ async function list(ctx) {
     const sql = 'SELECT * FROM post';
     return await query(sql);
   }
-  console.log(await selectAllData())
   await ctx.render('list', { posts: await selectAllData() });
 }
 
