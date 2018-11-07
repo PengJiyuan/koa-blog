@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2 start pm2.json",
-    "build": "cd client/build && webpack"
+    "build": "cd client && webpack"
   },
   "repository": {
     "type": "git",

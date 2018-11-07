@@ -11,13 +11,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const lessToJs = require('less-var-parse');
 
 const entry = {};
-fs.readdirSync('../applications')
-  .filter(m => fs.statSync(path.join('../applications', m)).isDirectory())
+fs.readdirSync('./applications')
+  .filter(m => fs.statSync(path.join('./applications', m)).isDirectory())
   .forEach((m) => {
-    entry[m] = [`../applications/${m}/index.jsx`];
+    entry[m] = [`./applications/${m}/index.jsx`];
   });
 
-const themer = lessToJs(fs.readFileSync(path.join(__dirname, '../theme/index.less'), 'utf8'));
+const themer = lessToJs(fs.readFileSync(path.join(__dirname, './theme/index.less'), 'utf8'));
 
 const webpackConfig = {
 
@@ -28,7 +28,7 @@ const webpackConfig = {
   entry,
 
   output: {
-    path: path.resolve(__dirname, `../public/`),
+    path: path.resolve(__dirname, `public/`),
     filename: '[hash:6].[name].min.js'
   },
 
@@ -120,7 +120,7 @@ const webpackConfig = {
   resolve: {
     extensions: ['.jsx', '.js', 'json'],
     modules: [
-      path.resolve(__dirname, '../'),
+      path.resolve(__dirname),
       'node_modules'
     ]
   }
