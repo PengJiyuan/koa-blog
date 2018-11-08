@@ -2,8 +2,9 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import './style/index.less';
+import Model from './model';
 
 ReactDOM.render(
-  <h1>fasdfsdafasdf</h1>,
+  <Model />,
   document.getElementById('container')
 );

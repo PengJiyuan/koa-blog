@@ -4,8 +4,10 @@ const logger = require('koa-logger');
 const koaBody = require('koa-body');
 const views = require('koa-views');
 const router = require('koa-router')();
+const serve = require('koa-static');
+const mount = require('koa-mount');
 const config = require('./config/config');
-const { query } = require('./mysql/query');
+const apiBlog = require('./api/blog');
 
 const Koa = require('koa');
 const app = module.exports = new Koa();
@@ -13,28 +15,30 @@ const app = module.exports = new Koa();
 // middleware
 
 app.use(logger());
-
-app.use(views(path.join(__dirname, '/views'), {
-  map: { html: 'swig' }
-}));
-
 app.use(koaBody());
 
+app.use(views(path.join(__dirname, '/views'), {
+  extension: 'ejs'
+}));
+
+const maxAge = 365 * 24 * 60 * 60;
+
+app.use(mount('/views', serve(path.resolve(__dirname, '../client/public/views')), { maxAge }));
+
 router.get('/', list);
-router.get('/post/new', add);
-router.get('/post/:id', show);
-router.post('/post', create);
+// router.get('/post/new', add);
+// router.get('/post/:id', show);
+// router.post('/post', create);
+router.get('/api/blog/list', apiBlog.getList);
+
+app.use(router.routes());
 
 /**
  * Post listing.
  */
 
 async function list(ctx) {
-  async function selectAllData() {
-    const sql = 'SELECT * FROM post';
-    return await query(sql);
-  }
-  await ctx.render('list', { posts: await selectAllData() });
+  await ctx.render('../../client/public/views/blog/blog.ejs');
 }
 
 /**
@@ -73,8 +77,6 @@ async function create(ctx) {
   await insert(post);
   ctx.redirect('/');
 }
-
-app.use(router.routes());
 
 // listen
 if (!module.parent) app.listen(config.port);

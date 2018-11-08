@@ -6,7 +6,7 @@ const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const os = require('os');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const lessToJs = require('less-var-parse');
 
@@ -14,22 +14,23 @@ const entry = {};
 fs.readdirSync('./applications')
   .filter(m => fs.statSync(path.join('./applications', m)).isDirectory())
   .forEach((m) => {
-    entry[m] = [`./applications/${m}/index.jsx`];
+    entry[`${m}/${m}`] = [`./applications/${m}/index.jsx`];
   });
 
 const themer = lessToJs(fs.readFileSync(path.join(__dirname, './theme/index.less'), 'utf8'));
 
 const webpackConfig = {
 
-  mode: 'production',
+  mode: 'development',
 
   context: __dirname,
 
   entry,
 
   output: {
-    path: path.resolve(__dirname, `public/`),
-    filename: '[hash:6].[name].min.js'
+    path: path.resolve(__dirname, `public/views/`),
+    filename: '[name].min.js',
+    publicPath: '/views'
   },
 
   module: {
@@ -103,16 +104,16 @@ const webpackConfig = {
         }
       }
     },
-    minimizer: [
-      new UglifyJSPlugin({
-        parallel: os.cpus().length
-      })
-    ]
+    // minimizer: [
+    //   new UglifyJSPlugin({
+    //     parallel: os.cpus().length
+    //   })
+    // ]
   },
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[hash:6].[name].min.css',
+      filename: '[name].min.css',
       chunkFilename: '[id].css'
     })
   ],
@@ -123,15 +124,17 @@ const webpackConfig = {
       path.resolve(__dirname),
       'node_modules'
     ]
-  }
+  },
+
+  watch: true
 };
 
-// const pluginHtmls = Object.keys(entry).map(id => new HtmlWebpackPlugin({
-//   filename: `${id === 'dashboard' ? 'index' : id}.html`,
-//   inject: true,
-//   template: path.resolve(__dirname, `html/${language}/${id}.html`)
-// }));
+const pluginHtmls = Object.keys(entry).map(id => new HtmlWebpackPlugin({
+  filename: `${id}.ejs`,
+  inject: true,
+  template: path.resolve(__dirname, `views/base.ejs`)
+}));
 
-// webpackConfig.plugins = webpackConfig.plugins.concat(pluginHtmls);
+webpackConfig.plugins = webpackConfig.plugins.concat(pluginHtmls);
 
 module.exports = webpackConfig;
