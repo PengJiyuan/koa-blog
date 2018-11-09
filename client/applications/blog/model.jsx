@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'antd';
 import request from './request';
 
 class Model extends React.Component {
@@ -15,19 +16,29 @@ class Model extends React.Component {
   }
 
   async getList() {
-    const data = await request.getBlogList();
-    this.setState({
-      data
+    request.getBlogList().then((res) => {
+      this.setState({
+        data: res
+      });
+    });
+  }
+
+  logout = () => {
+    request.logout().then(res => {
+      console.log(res);
     });
   }
 
   render() {
     return (
-      <ul>
-        {
-          this.state.data.map((blog) => <li key={blog.id}>{blog.title}</li>)
-        }
-      </ul>
+      <div>
+        <ul>
+          {
+            this.state.data.map((blog) => <li key={blog.id}>{blog.title}</li>)
+          }
+        </ul>
+        <Button onClick={this.logout} type="primary">登出</Button>
+      </div>
     );
   }
 }

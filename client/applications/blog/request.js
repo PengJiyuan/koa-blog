@@ -1,7 +1,13 @@
-import ky from 'ky';
+import fetch from 'libs/fetch';
 
 export default {
-  async getBlogList() {
-    return await ky.get('/api/blog/list').json();
+  getBlogList() {
+    return fetch.get('/api/blog/list').then((res) => {
+      console.log(res);
+      return res;
+    });
+  },
+  logout() {
+    return fetch.get('/api/logout');
   }
 }

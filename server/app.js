@@ -6,8 +6,11 @@ const views = require('koa-views');
 const router = require('koa-router')();
 const serve = require('koa-static');
 const mount = require('koa-mount');
+const session = require('koa-session');
+const passport = require('koa-passport');
 const config = require('./config/config');
 const apiBlog = require('./api/blog');
+// const apiLogin = require('./api/login');
 
 const Koa = require('koa');
 const app = module.exports = new Koa();
@@ -25,11 +28,38 @@ const maxAge = 365 * 24 * 60 * 60;
 
 app.use(mount('/views', serve(path.resolve(__dirname, '../client/public/views')), { maxAge }));
 
+// sessions
+app.keys = ['your-session-secret'];
+app.use(session({}, app));
+
+require('./auth');
+app.use(passport.initialize());
+app.use(passport.session());
+
+router.get('/login', auth);
 router.get('/', list);
 // router.get('/post/new', add);
 // router.get('/post/:id', show);
 // router.post('/post', create);
 router.get('/api/blog/list', apiBlog.getList);
+
+// POST /login
+router.post('/api/login', (ctx) => {
+  return passport.authenticate('local', (err, user, info, status) => {
+    console.log(err, user, info, status);
+    if (user === false) {
+      ctx.response.status = 401;
+      ctx.response.body = 'Auth Error!';
+    } else {
+      ctx.body = { success: true };
+      ctx.login(user);
+    }
+  })(ctx);
+});
+
+router.get('/api/logout', (ctx) => {
+  ctx.logout();
+});
 
 app.use(router.routes());
 
@@ -38,7 +68,19 @@ app.use(router.routes());
  */
 
 async function list(ctx) {
-  await ctx.render('../../client/public/views/blog/blog.ejs');
+  if(!ctx.isAuthenticated()) {
+    ctx.redirect('/login');
+  } else {
+    await ctx.render('../../client/public/views/blog/blog.ejs');
+  }
+}
+
+async function auth(ctx, next) {
+  if(ctx.isAuthenticated()) {
+    ctx.redirect('/');
+  } else {
+    await ctx.render('../../client/public/views/auth/auth.ejs');
+  }
 }
 
 /**

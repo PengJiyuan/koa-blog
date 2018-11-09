@@ -131,6 +131,7 @@ const webpackConfig = {
 
 const pluginHtmls = Object.keys(entry).map(id => new HtmlWebpackPlugin({
   filename: `${id}.ejs`,
+  chunks: ['dll', id],
   inject: true,
   template: path.resolve(__dirname, `views/base.ejs`)
 }));
