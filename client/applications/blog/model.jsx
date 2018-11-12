@@ -15,7 +15,7 @@ class Model extends React.Component {
     this.getList();
   }
 
-  async getList() {
+  getList() {
     request.getBlogList().then((res) => {
       this.setState({
         data: res
@@ -25,7 +25,7 @@ class Model extends React.Component {
 
   logout = () => {
     request.logout().then(res => {
-      console.log(res);
+      window.location = '/login';
     });
   }
 

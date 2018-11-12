@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Input,
   Icon,
-  Button
+  Button,
+  Alert
 } from 'antd';
 import request from './request';
 
@@ -12,7 +13,8 @@ class Model extends React.Component {
 
     this.state = {
       userName: '',
-      password: ''
+      password: '',
+      error: false
     }
   }
 
@@ -38,12 +40,12 @@ class Model extends React.Component {
       username: this.state.userName,
       password: this.state.password
     };
-    // const res = await request.login(data);
-    // console.log(res);
     request.login(data).then((res) => {
-      console.log(res);
+      window.location = '/';
     }).catch(err => {
-      console.log(err);
+      this.setState({
+        error: true
+      });
     });
   }
 
@@ -72,6 +74,9 @@ class Model extends React.Component {
                 value={password}
                 onChange={this.onChangePassword}
               />
+              {
+                this.state.error ? <Alert message="账号密码不对" type="error" showIcon /> : null
+              }
               <Button onClick={this.onSubmit} type="primary">登录</Button>
             </div>
           </div>

@@ -46,7 +46,6 @@ router.get('/api/blog/list', apiBlog.getList);
 // POST /login
 router.post('/api/login', (ctx) => {
   return passport.authenticate('local', (err, user, info, status) => {
-    console.log(err, user, info, status);
     if (user === false) {
       ctx.response.status = 401;
       ctx.response.body = 'Auth Error!';
@@ -58,6 +57,7 @@ router.post('/api/login', (ctx) => {
 });
 
 router.get('/api/logout', (ctx) => {
+  ctx.body = {logout: true};
   ctx.logout();
 });
 

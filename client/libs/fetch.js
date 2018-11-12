@@ -1,3 +1,8 @@
+/**
+ * fetch.get/post/put/delete/patch/head()
+ * Promise
+ */
+
 import {fetch as fetchPolyfill} from 'whatwg-fetch';
 
 const _fetch = window.fetch ? window.fetch : fetchPolyfill;
@@ -26,13 +31,17 @@ function processData(data) {
 methods.forEach(method => {
   request[method.toLowerCase()] = (url, options) => {
     if (method === 'get' || method === 'head') {
-      delete options.data;
+      delete options.body;
     } else {
-      if (options && options.data) {
-        options.data = processData(options.data);
+      if (options && options.body) {
+        options.body = processData(options.body);
       }
     }
     return _fetch(url, {
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       ...options,
       method
     }).then(checkStatus)

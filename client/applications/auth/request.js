@@ -1,9 +1,9 @@
 import fetch from 'libs/fetch';
 
 export default {
-  login(data) {
+  login(body) {
     return fetch.post('/api/login', {
-      data
+      body
     });
   }
 }
