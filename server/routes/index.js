@@ -1,49 +1,60 @@
 const router = require('koa-router')();
+const apiBlog = require('../api/blog');
 
-const posts = [];
+function initRoutes(app) {
+  router.get('/login', auth);
+  router.get('/', blog);
+  router.get('/blog/(.*)', blog);
+  router.post('/api/publish', apiBlog.publish);
+  router.get('/api/blog', apiBlog.getList);
+  router.get('/api/blog/:id', apiBlog.getBlogById);
 
-router.get('/', list);
-router.get('/post/new', add);
-router.get('/post/:id', show);
-router.post('/post', create);
+  // POST /login
+  router.post('/api/login', (ctx) => {
+    return passport.authenticate('local', (err, user, info, status) => {
+      if (user === false) {
+        ctx.response.status = 401;
+        ctx.response.body = 'Auth Error!';
+      } else {
+        ctx.state.user = user;
+        ctx.body = { success: true, user };
+        ctx.login(user);
+      }
+    })(ctx);
+  });
 
-/**
- * Post listing.
- */
+  router.get('/api/logout', (ctx) => {
+    ctx.state.user = null;
+    ctx.body = {logout: true};
+    ctx.logout();
+  });
 
-async function list(ctx) {
-  await ctx.render('list', { posts: posts });
+  app.use(router.routes());
+
+  async function blog(ctx) {
+    console.log(ctx.path)
+    switch(ctx.path) {
+      // 必须登录才能发表
+      case '/blog/publish':
+        if (ctx.isUnauthenticated()) {
+          ctx.redirect('/');
+        } else {
+          await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+        }
+        break;
+      default:
+        await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+        break;
+    }
+  }
+  
+  async function auth(ctx, next) {
+    if(ctx.isAuthenticated()) {
+      ctx.redirect('/');
+    } else {
+      await ctx.render('../../client/public/views/auth/auth.ejs', {userInfo: null});
+    }
+  }
 }
 
-/**
- * Show creation form.
- */
-
-async function add(ctx) {
-  await ctx.render('new');
-}
-
-/**
- * Show post :id.
- */
-
-async function show(ctx) {
-  const id = ctx.params.id;
-  const post = posts[id];
-  if (!post) ctx.throw(404, 'invalid post id');
-  await ctx.render('show', { post: post });
-}
-
-/**
- * Create a post.
- */
-
-async function create(ctx) {
-  const post = ctx.request.body;
-  const id = posts.push(post) - 1;
-  post.created_at = new Date();
-  post.id = id;
-  ctx.redirect('/');
-}
-
-module.exports = router;
+module.exports = initRoutes;
