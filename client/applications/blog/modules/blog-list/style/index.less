@@ -1,0 +1,29 @@
+.module-blog-list {
+  flex: 1;
+  ul.list-wrapper {
+    max-width: 1000px;
+    height: auto;
+    margin: 0 auto;
+    li {
+      position: relative;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e7eef2;
+      &:after {
+        display: block;
+        content: "";
+        width: 7px;
+        height: 7px;
+        border: #e7eef2 1px solid;
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        margin-left: -5px;
+        background: #fff;
+        border-radius: 100%;
+        -webkit-box-shadow: #fff 0 0 0 5px;
+        box-shadow: #fff 0 0 0 5px;
+      }
+    }
+  }
+}

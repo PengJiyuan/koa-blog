@@ -37,11 +37,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 router.get('/login', auth);
-router.get('/', list);
-// router.get('/post/new', add);
-// router.get('/post/:id', show);
-// router.post('/post', create);
+router.get('/', blog);
+router.get('/blog/(.*)', blog);
+router.post('/api/publish', apiBlog.publish);
 router.get('/api/blog', apiBlog.getList);
+router.get('/api/blog/:id', apiBlog.getBlogById);
 
 // POST /login
 router.post('/api/login', (ctx) => {
@@ -69,53 +69,29 @@ app.use(router.routes());
  * Post listing.
  */
 
-async function list(ctx) {
-  await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+async function blog(ctx) {
+  console.log(ctx.path)
+  switch(ctx.path) {
+    // 必须登录才能发表
+    case '/blog/publish':
+      if (ctx.isUnauthenticated()) {
+        ctx.redirect('/');
+      } else {
+        await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+      }
+      break;
+    default:
+      await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+      break;
+  }
 }
 
 async function auth(ctx, next) {
   if(ctx.isAuthenticated()) {
     ctx.redirect('/');
   } else {
-    await ctx.render('../../client/public/views/auth/auth.ejs');
+    await ctx.render('../../client/public/views/auth/auth.ejs', {userInfo: null});
   }
-}
-
-/**
- * Show creation form.
- */
-
-async function add(ctx) {
-  await ctx.render('new');
-}
-
-/**
- * Show post :id.
- */
-
-async function show(ctx) {
-  async function getPostById(id) {
-    const sql = `SELECT * FROM post where id=${id}`;
-    return await query(sql);
-  }
-  const id = ctx.params.id;
-  const post = await getPostById(id);
-  await ctx.render('show', { post: post[0] });
-}
-
-/**
- * Create a post.
- */
-
-async function create(ctx) {
-  async function insert(data) {
-    const sql = 'INSERT INTO post SET ?';
-    await query(sql, data);
-  }
-  const post = ctx.request.body;
-  post.created_at = new Date();
-  await insert(post);
-  ctx.redirect('/');
 }
 
 // listen
