@@ -7,6 +7,7 @@ class Model extends React.Component {
     super(props);
 
     this.state = {
+      username: localStorage.getItem('username'),
       data: []
     }
   }
@@ -25,19 +26,33 @@ class Model extends React.Component {
 
   logout = () => {
     request.logout().then(res => {
-      window.location = '/login';
+      window.location = '/';
     });
   }
 
   render() {
+    const { data } = this.state;
+    const username = window.userInfo && wiondow.userInfo.username;
     return (
-      <div>
-        <ul>
+      <div className="blog-list">
+        <nav className="nav">
+          <div className="left">
+            fdsafsd
+          </div>
+          <div className="right">
+            {
+              username ? <span>{`${username}, 欢迎您！`} <a onClick={this.logout}>注销</a></span> : <a href="/login">登录</a>
+            }
+          </div>
+        </nav>
+        <ul className="list-wrapper">
           {
-            this.state.data.map((blog) => <li key={blog.id}>{blog.title}</li>)
+            data.map((blog) => <li key={blog.id}>
+              <h1><a href={`/api/blog/${blog.id}`}>{blog.title}</a></h1>
+              <div className="content">{blog.body}</div>
+            </li>)
           }
         </ul>
-        <Button onClick={this.logout} type="primary">登出</Button>
       </div>
     );
   }

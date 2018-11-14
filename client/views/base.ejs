@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Koa Blog</title>
+  <script>
+    window.userInfo = JSON.parse('<%= htmlWebpackPlugin.options.userInfo %>')
+  </script>
 </head>
 <body>
   <div id="container"></div>

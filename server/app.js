@@ -41,7 +41,7 @@ router.get('/', list);
 // router.get('/post/new', add);
 // router.get('/post/:id', show);
 // router.post('/post', create);
-router.get('/api/blog/list', apiBlog.getList);
+router.get('/api/blog', apiBlog.getList);
 
 // POST /login
 router.post('/api/login', (ctx) => {
@@ -50,13 +50,15 @@ router.post('/api/login', (ctx) => {
       ctx.response.status = 401;
       ctx.response.body = 'Auth Error!';
     } else {
-      ctx.body = { success: true };
+      ctx.state.user = user;
+      ctx.body = { success: true, user };
       ctx.login(user);
     }
   })(ctx);
 });
 
 router.get('/api/logout', (ctx) => {
+  ctx.state.user = null;
   ctx.body = {logout: true};
   ctx.logout();
 });
@@ -68,11 +70,7 @@ app.use(router.routes());
  */
 
 async function list(ctx) {
-  if(!ctx.isAuthenticated()) {
-    ctx.redirect('/login');
-  } else {
-    await ctx.render('../../client/public/views/blog/blog.ejs');
-  }
+  await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
 }
 
 async function auth(ctx, next) {
