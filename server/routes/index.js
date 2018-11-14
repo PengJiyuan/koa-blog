@@ -32,7 +32,6 @@ function initRoutes(app) {
   app.use(router.routes());
 
   async function blog(ctx) {
-    console.log(ctx.path)
     switch(ctx.path) {
       // 必须登录才能发表
       case '/blog/publish':
