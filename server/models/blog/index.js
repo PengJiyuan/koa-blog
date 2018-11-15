@@ -5,6 +5,11 @@ function model(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      comment: '博客发布者的uuid'
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

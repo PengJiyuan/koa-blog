@@ -10,6 +10,7 @@ class BlogController {
   static async publish(ctx) {
     const post = ctx.request.body;
     post.created_at = new Date();
+    post.user_id = ctx.state.user.id;
     await Blog.create(post);
     ctx.body = {
       post
