@@ -1,16 +1,6 @@
 
 const passport = require('koa-passport');
-const { query } = require('./mysql/query');
-
-async function fetchUserById(id) {
-  const sql = 'SELECT * FROM user WHERE id = ?';
-  return await query(sql, [id]);
-}
-
-async function fetchUserByUserName(username) {
-  const sql = 'SELECT * FROM user WHERE username = ?';
-  return await query(sql, [username]);
-}
+const User = require('./models').user;
 
 passport.serializeUser((user, done) => {
   try {
@@ -22,8 +12,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async function(id, done) {
   try {
-    const user = await fetchUserById(id);
-    done(null, user[0]);
+    const user = await User.findById(id);
+    done(null, user);
   } catch(err) {
     done(err);
   }
@@ -31,9 +21,10 @@ passport.deserializeUser(async function(id, done) {
 
 const LocalStrategy = require('passport-local').Strategy;
 passport.use(new LocalStrategy(async (username, password, done) => {
-  const user = await fetchUserByUserName(username);
-  if (user && user.length > 0 && username === user[0].username && password === user[0].password) {
-    done(null, user[0]);
+  const user = await User.findOne({ where: {username} });
+  console.log(user.username);
+  if (username === user.username && password === user.password) {
+    done(null, user);
   } else {
     done(null, false);
   }

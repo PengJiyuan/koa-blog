@@ -1,13 +1,23 @@
 const router = require('koa-router')();
 const apiBlog = require('../api/blog');
+const passport = require('koa-passport');
 
 function initRoutes(app) {
+  // 只有登录之后的用户才可以进行api查询
+  router.use(['/api/publish'], async(ctx, next) => {
+    if (ctx.state.user) {
+      await next();
+    } else {
+      ctx.status = 403;
+      ctx.body = {statusCode: 403, errors: [{message: '授权失败，请登录'}]};
+    }
+  });
   router.get('/login', auth);
   router.get('/', blog);
   router.get('/blog/(.*)', blog);
   router.post('/api/publish', apiBlog.publish);
   router.get('/api/blog', apiBlog.getList);
-  router.get('/api/blog/:uuid', apiBlog.getBlogByUuid);
+  router.get('/api/blog/:id', apiBlog.getBlogById);
 
   // POST /login
   router.post('/api/login', (ctx) => {
