@@ -1,4 +1,5 @@
 const { query } = require('../mysql/query');
+const getUUID = require('../utils/nanoid');
 
 class BlogController {
   // 博客列表
@@ -17,6 +18,7 @@ class BlogController {
       await query(sql, data);
     }
     const post = ctx.request.body;
+    post.uuid = getUUID(12);
     post.created_at = new Date();
     await insert(post);
     ctx.body = {
@@ -25,13 +27,13 @@ class BlogController {
   }
 
   // 根据id获取博客内容
-  static async getBlogById(ctx) {
-    async function getPostById(id) {
-      const sql = `SELECT * FROM post where id=${id}`;
+  static async getBlogByUuid(ctx) {
+    async function getPostByUuid(uuid) {
+      const sql = `SELECT * FROM post WHERE uuid="${uuid}"`;
       return await query(sql);
     }
-    const id = ctx.params.id;
-    const post = await getPostById(id);
+    const uuid = ctx.params.uuid;
+    const post = await getPostByUuid(uuid);
     ctx.body = {
       blog: post[0]
     };

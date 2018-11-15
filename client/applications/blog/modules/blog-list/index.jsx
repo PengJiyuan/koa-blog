@@ -31,8 +31,8 @@ class BlogList extends React.Component {
       <div className="module-blog-list">
         <ul className="list-wrapper">
           {
-            data.map((blog) => <li key={blog.id}>
-              <h1><Link to={`/blog/list/${blog.id}`}>{blog.title}</Link></h1>
+            data.map((blog) => <li key={blog.uuid}>
+              <h1><Link to={`/blog/list/${blog.uuid}`}>{blog.title}</Link></h1>
               <div className="content">{blog.body}</div>
             </li>)
           }

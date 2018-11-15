@@ -7,7 +7,7 @@ function initRoutes(app) {
   router.get('/blog/(.*)', blog);
   router.post('/api/publish', apiBlog.publish);
   router.get('/api/blog', apiBlog.getList);
-  router.get('/api/blog/:id', apiBlog.getBlogById);
+  router.get('/api/blog/:uuid', apiBlog.getBlogByUuid);
 
   // POST /login
   router.post('/api/login', (ctx) => {
