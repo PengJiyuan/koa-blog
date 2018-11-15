@@ -4,10 +4,10 @@ const logger = require('koa-logger');
 const koaBody = require('koa-body');
 const views = require('koa-views');
 const initRoutes = require('./routes');
+const initPassport = require('./auth');
 const serve = require('koa-static');
 const mount = require('koa-mount');
 const session = require('koa-session');
-const passport = require('koa-passport');
 const config = require('./config/config');
 
 const Koa = require('koa');
@@ -30,10 +30,7 @@ app.use(mount('/views', serve(path.resolve(__dirname, '../client/public/views'))
 app.keys = ['your-session-secret'];
 app.use(session({}, app));
 
-require('./auth');
-app.use(passport.initialize());
-app.use(passport.session());
-
+initPassport(app);
 initRoutes(app);
 
 // listen

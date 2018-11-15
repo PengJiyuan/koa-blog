@@ -1,9 +1,10 @@
+const fs = require('fs');
+const path = require('path');
 const router = require('koa-router')();
-const apiBlog = require('../api/blog');
 const passport = require('koa-passport');
 
 function initRoutes(app) {
-  // 只有登录之后的用户才可以进行api查询
+  // 只有登录之后的用户才可以进行发表博客
   router.use(['/api/publish'], async(ctx, next) => {
     if (ctx.state.user) {
       await next();
@@ -12,58 +13,17 @@ function initRoutes(app) {
       ctx.body = {statusCode: 403, errors: [{message: '授权失败，请登录'}]};
     }
   });
-  router.get('/login', auth);
-  router.get('/', blog);
-  router.get('/blog/(.*)', blog);
-  router.post('/api/publish', apiBlog.publish);
-  router.get('/api/blog', apiBlog.getList);
-  router.get('/api/blog/:id', apiBlog.getBlogById);
 
-  // POST /login
-  router.post('/api/login', (ctx) => {
-    return passport.authenticate('local', (err, user, info, status) => {
-      if (user === false) {
-        ctx.response.status = 401;
-        ctx.response.body = 'Auth Error!';
-      } else {
-        ctx.state.user = user;
-        ctx.body = { success: true, user };
-        ctx.login(user);
+  fs.readdirSync(path.join(__dirname))
+    .filter(dir => dir !== 'index.js')
+    .forEach(app => {
+      const models = fs.statSync(path.join(__dirname, app));
+      if (models.isDirectory()) {
+        require(path.join(__dirname, app))(router);
       }
-    })(ctx);
-  });
-
-  router.get('/api/logout', (ctx) => {
-    ctx.state.user = null;
-    ctx.body = {logout: true};
-    ctx.logout();
-  });
+    });
 
   app.use(router.routes());
-
-  async function blog(ctx) {
-    switch(ctx.path) {
-      // 必须登录才能发表
-      case '/blog/publish':
-        if (ctx.isUnauthenticated()) {
-          ctx.redirect('/');
-        } else {
-          await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
-        }
-        break;
-      default:
-        await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
-        break;
-    }
-  }
-  
-  async function auth(ctx, next) {
-    if(ctx.isAuthenticated()) {
-      ctx.redirect('/');
-    } else {
-      await ctx.render('../../client/public/views/auth/auth.ejs', {userInfo: null});
-    }
-  }
 }
 
 module.exports = initRoutes;

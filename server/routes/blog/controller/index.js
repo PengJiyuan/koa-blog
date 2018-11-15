@@ -1,4 +1,4 @@
-const Blog = require('../models').blog;
+const Blog = require('../../../models').blog;
 
 class BlogController {
   // 博客列表
