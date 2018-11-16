@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updateList } from './store/action';
 import request from './request';
 import './style/index.less';
 
@@ -8,30 +10,22 @@ class BlogList extends React.Component {
     super(props);
 
     this.state = {
-      username: '',
-      data: []
     }
   }
 
   componentDidMount() {
-    this.getList();
-  }
-
-  getList() {
-    request.getBlogList().then((res) => {
-      this.setState({
-        data: res
-      });
-    });
+    const { store } = this.context;
+    this.props.updateList();
   }
 
   render() {
-    const { data } = this.state;
+    const { list, state } = this.props;
+
     return (
       <div className="module-blog-list">
         <ul className="list-wrapper">
           {
-            data.map((blog) => <li key={blog.id}>
+            list.map((blog) => <li key={blog.id}>
               <h1><Link to={`/blog/list/${blog.id}`}>{blog.title}</Link></h1>
               <div className="content">{blog.body}</div>
             </li>)
@@ -42,4 +36,8 @@ class BlogList extends React.Component {
   }
 }
 
-export default BlogList;
+export default connect(state => ({
+  list: state.blogList
+}), {
+  updateList
+})(BlogList);

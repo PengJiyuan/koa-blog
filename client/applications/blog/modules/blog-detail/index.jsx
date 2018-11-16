@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { getBlogById } from './store/action';
 import request from './request';
 import getPathList from '../../utils/pathlist';
 import './style/index.less';
@@ -8,25 +10,16 @@ class BlogDetail extends React.Component {
     super(props);
 
     this.state = {
-      blog: ''
     }
   }
 
   componentDidMount() {
-    this.getBlogById();
-  }
-
-  getBlogById() {
     const pathlist = getPathList();
-    request.getBlogById(pathlist[2]).then((res) => {
-      this.setState({
-        blog: res.blog
-      });
-    });
+    this.props.getBlogById(pathlist[2]);
   }
 
   render() {
-    const { blog } = this.state;
+    const { blog } = this.props;
     return (
       <div className="module-blog-detail">
         <div className="blog-content">
@@ -38,4 +31,8 @@ class BlogDetail extends React.Component {
   }
 }
 
-export default BlogDetail;
+export default connect(state => ({
+  blog: state.blogContent
+}), {
+  getBlogById
+})(BlogDetail);
