@@ -10,6 +10,11 @@ function model(sequelize, DataTypes) {
       allowNull: false,
       comment: '博客发布者的uuid'
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: '作者'
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

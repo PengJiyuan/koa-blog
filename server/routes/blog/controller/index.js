@@ -11,6 +11,7 @@ class BlogController {
     const post = ctx.request.body;
     post.created_at = new Date();
     post.user_id = ctx.state.user.id;
+    post.username = ctx.state.user.username;
     await Blog.create(post);
     ctx.body = {
       post
