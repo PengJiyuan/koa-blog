@@ -21,10 +21,15 @@ function model(sequelize, DataTypes) {
       comment: '博客标题'
     },
     body: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       comment: '博客内容'
-    }
+    },
+    // viewCount: {
+    //   type: DataTypes.INTEGER,
+    //   defaultValue: 0,
+    //   comment: '访问量'
+    // }
   }, {
     paranoid: false,
     charset: 'utf8',

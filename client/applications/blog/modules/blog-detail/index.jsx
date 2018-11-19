@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getBlogById } from './store/action';
 import request from './request';
-import getPathList from '../../utils/pathlist';
+import history from 'libs/history';
 import './style/index.less';
 
 class BlogDetail extends React.Component {
@@ -14,7 +14,7 @@ class BlogDetail extends React.Component {
   }
 
   componentDidMount() {
-    const pathlist = getPathList();
+    const pathlist = history.getPathList();
     this.props.getBlogById(pathlist[2]);
   }
 

@@ -1,36 +1,46 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
   Link,
   Redirect
 } from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import history from 'libs/history';
 import NavBar from './components/navbar';
 import BlogList from './modules/blog-list';
 import BlogPublish from './modules/blog-publish';
 import BlogDetail from './modules/blog-detail';
-
-const HISTORY = createBrowserHistory({
-  basename: `/blog`
-});
+import BlogUpdate from './modules/blog-update';
 
 class Model extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      auth: window.userInfo
+    };
+
+    history.listen((h) => {
+    });
   }
 
   render() {
+    const { auth } = this.state;
     return (
-      <Router>
+      <Router history={history}>
         <div className="main">
           <NavBar />
           <div className="content">
             <Switch>
               <Route path="/" exact component={BlogList} />
               <Route path="/blog/list" exact component={BlogList} />
-              <Route path="/blog/publish" component={BlogPublish} />
+              {
+                auth ? [
+                  <Route path="/blog/publish" component={BlogPublish} />,
+                  <Route path="/blog/update/:id" component={BlogUpdate} />
+                ] : null
+              }
               <Route path="/blog/list/:id" component={BlogDetail} />
               <Redirect to="/blog/list" />
             </Switch>

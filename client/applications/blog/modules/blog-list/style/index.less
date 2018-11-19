@@ -6,7 +6,7 @@
     margin: 0 auto;
     li {
       position: relative;
-      padding-bottom: 20px;
+      padding-bottom: 10px;
       margin-bottom: 20px;
       border-bottom: 1px solid #e7eef2;
       &:after {
@@ -23,6 +23,22 @@
         border-radius: 100%;
         -webkit-box-shadow: #fff 0 0 0 5px;
         box-shadow: #fff 0 0 0 5px;
+      }
+      .listitem {
+        > div {
+          margin-bottom: 10px;
+        }
+      }
+      .edit {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        &.hide {
+          display: none;
+        }
+        > a {
+          margin-left: 10px;
+        }
       }
     }
   }

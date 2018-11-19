@@ -12,16 +12,30 @@ class BlogPublish extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    const pathList = history.getPathList();
+    if (pathList.length > 2) {
+      request.getBlogById(pathList[2]).then((res) => {
+        const blog = res.blog;
+        this.props.form.setFieldsValue({
+          title: blog.title,
+          body: blog.body
+        });
+      });
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        request.publish(values).then((res) => {
-          message.info('博客发表成功', 1.5)
+        const pathList = history.getPathList();
+        request.updateBlog(pathList[2], values).then((res) => {
+          message.info('博客修改成功', 1.5)
             .then(() => {
               history.push('/');
             });
-        }).catch(console.error);
+        });
       }
     });
   }
@@ -33,7 +47,7 @@ class BlogPublish extends React.Component {
       wrapperCol: { span: 14 },
     };
     return (
-      <div className="module-blog-publish">
+      <div className="module-blog-update">
         <Form onSubmit={this.onSubmit}>
           <FormItem
             {...formItemLayout}
@@ -69,7 +83,7 @@ class BlogPublish extends React.Component {
               sm: { span: 24, offset: 12 },
             }}
           >
-            <Button type="primary" htmlType="submit">发布</Button>
+            <Button type="primary" htmlType="submit">修改</Button>
           </FormItem>
         </Form>
       </div>

@@ -1,3 +1,5 @@
+const passport = require('koa-passport');
+
 function routeLogin(router) {
 
   router.get('/login', auth);

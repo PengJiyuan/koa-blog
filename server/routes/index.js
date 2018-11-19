@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const router = require('koa-router')();
-const passport = require('koa-passport');
 
 function initRoutes(app) {
   // 只有登录之后的用户才可以进行发表博客

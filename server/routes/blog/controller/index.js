@@ -6,8 +6,17 @@ class BlogController {
     ctx.body = await Blog.findAll();
   }
 
+  // 根据id获取博客内容
+  static async getBlogById(ctx) {
+    const id = ctx.params.id;
+    const blog = await Blog.findById(id);
+    ctx.body = {
+      blog
+    };
+  }
+
   // 发布博客
-  static async publish(ctx) {
+  static async publishBlog(ctx) {
     const post = ctx.request.body;
     post.created_at = new Date();
     post.user_id = ctx.state.user.id;
@@ -18,12 +27,31 @@ class BlogController {
     };
   }
 
-  // 根据id获取博客内容
-  static async getBlogById(ctx) {
-    const id = ctx.params.id;
-    const blog = await Blog.findById(id);
+  // 修改博客
+  static async updateBlog(ctx) {
+    const { id } = ctx.request.query;
+    const { body } = ctx.request;
+    await Blog.update(body, {
+      where: {
+        id
+      }
+    });
     ctx.body = {
-      blog
+      id,
+      ...body
+    };
+  }
+
+  // 删除博客
+  static async deleteBlog(ctx) {
+    const { id } = ctx.request.query;
+    await Blog.destroy({
+      where: {
+        id
+      }
+    });
+    ctx.body = {
+      success: true
     };
   }
 }

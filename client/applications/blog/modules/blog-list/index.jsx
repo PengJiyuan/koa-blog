@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateList } from './store/action';
+import ListItem from './listItem';
 import request from './request';
 import './style/index.less';
 
@@ -19,16 +19,13 @@ class BlogList extends React.Component {
   }
 
   render() {
-    const { list, state } = this.props;
+    const { list } = this.props;
 
     return (
       <div className="module-blog-list">
         <ul className="list-wrapper">
           {
-            list.map((blog) => <li key={blog.id}>
-              <h1><Link to={`/blog/list/${blog.id}`}>{blog.title}</Link></h1>
-              <div className="content">{blog.body}</div>
-            </li>)
+            list.map((blog) => <ListItem key={blog.id} blog={blog} />)
           }
         </ul>
       </div>
