@@ -20,16 +20,21 @@ function model(sequelize, DataTypes) {
       allowNull: false,
       comment: '博客标题'
     },
+    introduction: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      comment: '博客简介'
+    },
     body: {
       type: DataTypes.TEXT,
       allowNull: false,
       comment: '博客内容'
     },
-    // viewCount: {
-    //   type: DataTypes.INTEGER,
-    //   defaultValue: 0,
-    //   comment: '访问量'
-    // }
+    viewCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      comment: '访问量'
+    }
   }, {
     paranoid: false,
     charset: 'utf8',

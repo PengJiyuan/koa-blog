@@ -1,4 +1,5 @@
 const Blog = require('../../../models').blog;
+const path = require('path');
 
 class BlogController {
   // 博客列表
@@ -9,7 +10,7 @@ class BlogController {
   // 根据id获取博客内容
   static async getBlogById(ctx) {
     const id = ctx.params.id;
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findByPk(id);
     ctx.body = {
       blog
     };
@@ -52,6 +53,17 @@ class BlogController {
     });
     ctx.body = {
       success: true
+    };
+  }
+
+  static async uploadFile(ctx) {
+    const file = ctx.req.file;
+    const uuid = ctx.req.body.uuid;
+    const url = `/upload/${file.filename}`;
+    ctx.body = {
+      ...file,
+      uuid,
+      url
     };
   }
 }

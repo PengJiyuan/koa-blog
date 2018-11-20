@@ -29,7 +29,7 @@ class ListItem extends React.Component {
         <div className="listitem">
           <h1><Link to={`/blog/list/${blog.id}`}>{blog.title}</Link></h1>
           <div className="author">作者：{blog.username}</div>
-          <div className="content">{blog.body}</div>
+          <div className="content">{blog.introduction}</div>
         </div>
         <div className={`edit ${auth ? '' : 'hide'}`}>
           <Link to={`/blog/update/${blog.id}`}>编辑</Link>

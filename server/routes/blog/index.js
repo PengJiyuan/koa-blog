@@ -1,4 +1,27 @@
 const apiBlog = require('./controller');
+const path = require('path');
+const fs = require('fs-extra');
+const multer = require('koa-multer');
+
+const uploadPath = path.resolve(__dirname, '../../../upload/');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const u = req.body.uuid;
+    fs.mkdirp(path.join(uploadPath, u), err => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, u + '/' + file.originalname);
+      }
+    });
+  }
+});
+
+const upload = multer({ storage });
 
 function routeBlog(router) {
 
@@ -10,6 +33,7 @@ function routeBlog(router) {
   router.get('/api/blog/:id', apiBlog.getBlogById);
   router.post('/api/publish', apiBlog.publishBlog);
   router.put('/api/publish', apiBlog.updateBlog);
+  router.post('/api/uploadFile', upload.single('file'), apiBlog.uploadFile);
 
   async function blog(ctx) {
     switch(ctx.path) {

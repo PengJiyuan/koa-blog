@@ -1,7 +1,7 @@
 
 const path = require('path');
 const logger = require('koa-logger');
-const koaBody = require('koa-body');
+const bodyParser = require('koa-bodyparser');
 const views = require('koa-views');
 const initRoutes = require('./routes');
 const initPassport = require('./auth');
@@ -16,7 +16,7 @@ const app = module.exports = new Koa();
 // middleware
 
 app.use(logger());
-app.use(koaBody());
+app.use(bodyParser());
 
 app.use(views(path.join(__dirname, '/views'), {
   extension: 'ejs'
@@ -25,6 +25,7 @@ app.use(views(path.join(__dirname, '/views'), {
 const maxAge = 365 * 24 * 60 * 60;
 
 app.use(mount('/views', serve(path.resolve(__dirname, '../client/public/views')), { maxAge }));
+app.use(mount('/upload', serve(path.resolve(__dirname, '../upload')), { maxAge }));
 
 // sessions
 app.keys = ['your-session-secret'];

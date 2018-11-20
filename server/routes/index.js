@@ -23,6 +23,7 @@ function initRoutes(app) {
     });
 
   app.use(router.routes());
+  app.use(router.allowedMethods());
 }
 
 module.exports = initRoutes;

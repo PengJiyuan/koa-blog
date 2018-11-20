@@ -24,7 +24,7 @@ class BlogDetail extends React.Component {
       <div className="module-blog-detail">
         <div className="blog-content">
           <h1 className="title">{blog.title}</h1>
-          <article className="article">{blog.body}</article>
+          <article className="article" dangerouslySetInnerHTML={{ __html: blog.body }} />
         </div>
       </div>
     );
