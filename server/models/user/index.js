@@ -5,6 +5,11 @@ function model(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 0,
+      comment: '是否为管理员'
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,

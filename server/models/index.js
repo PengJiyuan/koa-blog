@@ -22,7 +22,7 @@ sequelize.sync({/*logging: true*/}).then(async () => {
   // 如果user表中没有用户，创建一个默认用户
   const users = await db.user.findAndCountAll();
   if (users.count < 1) {
-    await db.user.create({username: 'peng', password: '1234'});
+    await db.user.create({username: 'peng', password: '1234', admin: 1});
     console.log('Create default user success!');
   }
 }).catch(console.error);
