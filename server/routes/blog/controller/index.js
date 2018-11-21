@@ -1,5 +1,7 @@
 const Blog = require('../../../models').blog;
 const path = require('path');
+const fs = require('fs-extra');
+const config = require('../../../config/config');
 
 class BlogController {
   // 博客列表
@@ -46,6 +48,13 @@ class BlogController {
   // 删除博客
   static async deleteBlog(ctx) {
     const { id } = ctx.request.query;
+    const deleteOne = await Blog.findOne({
+      where: {
+        id
+      }
+    });
+    // 删除对应博客的图片资源
+    fs.removeSync(path.resolve(config.uploadPath, deleteOne.mediaPrefix));
     await Blog.destroy({
       where: {
         id

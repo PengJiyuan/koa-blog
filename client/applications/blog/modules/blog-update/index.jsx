@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Input, Button, message } from 'antd';
+import BraftEditor from 'braft-editor';
 import history from 'libs/history';
+import uploadFn from 'libs/upload';
 import request from './request';
 import './style/index.less';
 
@@ -10,6 +12,10 @@ const { TextArea } = Input;
 class BlogPublish extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      uuid: ''
+    };
   }
 
   componentDidMount() {
@@ -17,9 +23,13 @@ class BlogPublish extends React.Component {
     if (pathList.length > 2) {
       request.getBlogById(pathList[2]).then((res) => {
         const blog = res.blog;
+        this.setState({
+          uuid: blog.mediaPrefix
+        });
         this.props.form.setFieldsValue({
           title: blog.title,
-          body: blog.body
+          introduction: blog.introduction,
+          body: BraftEditor.createEditorState(blog.body)
         });
       });
     }
@@ -28,19 +38,26 @@ class BlogPublish extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      const data = {
+        title: values.title,
+        introduction: values.introduction,
+        body: values.body.toHTML()
+      };
+
       if (!err) {
         const pathList = history.getPathList();
-        request.updateBlog(pathList[2], values).then((res) => {
+        request.publish(pathList[2], values).then((res) => {
           message.info('博客修改成功', 1.5)
             .then(() => {
               history.push('/');
             });
-        });
+        }).catch(console.error);
       }
     });
   }
 
   render() {
+    const { uuid } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -65,6 +82,24 @@ class BlogPublish extends React.Component {
           </FormItem>
           <FormItem
             {...formItemLayout}
+            label="简介"
+          >
+            {
+              getFieldDecorator('introduction', {
+                rules: [
+                  { required: true, message: '博客简介不能为空!' },
+                ],
+              })(
+                <TextArea
+                  rows={4}
+                  placeholder="请输入简介内容"
+                >
+                </TextArea>
+              )
+            }
+          </FormItem>
+          <FormItem
+            {...formItemLayout}
             label="内容"
           >
             {
@@ -73,7 +108,11 @@ class BlogPublish extends React.Component {
                   { required: true, message: '博客内容不能为空!' },
                 ],
               })(
-                <TextArea rows={6} placeholder="请输入博客内容" />
+                <BraftEditor
+                  className="my-editor"
+                  media={{uploadFn: uploadFn.bind(this)}}
+                  placeholder="请输入正文内容"
+                />
               )
             }
           </FormItem>
@@ -83,7 +122,7 @@ class BlogPublish extends React.Component {
               sm: { span: 24, offset: 12 },
             }}
           >
-            <Button type="primary" htmlType="submit">修改</Button>
+            <Button type="primary" htmlType="submit">发布</Button>
           </FormItem>
         </Form>
       </div>

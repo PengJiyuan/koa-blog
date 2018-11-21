@@ -10,6 +10,10 @@ function model(sequelize, DataTypes) {
       allowNull: false,
       comment: '博客发布者的uuid'
     },
+    mediaPrefix: {
+      type: DataTypes.STRING,
+      comment: '所属图片的引用前缀'
+    },
     username: {
       type: DataTypes.STRING,
       allowNull: false,

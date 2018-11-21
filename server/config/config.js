@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   port: 3000,
   mysql: {
@@ -6,5 +8,6 @@ module.exports = {
     user     : 'root',
     password : '',
     database : 'koa_blog'
-  }
+  },
+  uploadPath: path.resolve('upload')
 };

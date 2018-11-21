@@ -2,8 +2,9 @@ const apiBlog = require('./controller');
 const path = require('path');
 const fs = require('fs-extra');
 const multer = require('koa-multer');
+const config = require('../../config/config');
 
-const uploadPath = path.resolve(__dirname, '../../../upload/');
+const uploadPath = config.uploadPath;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
       if (err) {
         cb(err);
       } else {
-        cb(null, u + '/' + file.originalname);
+        cb(null, `${u}/${file.originalname}`);
       }
     });
   }

@@ -17,7 +17,7 @@ fs.readdirSync(path.join(__dirname))
 db.sequelize = sequelize;
 // alter: true
 // SequelizeDatabaseError: Too many keys specified; max 64 keys allowed
-sequelize.sync({logging: true}).then(async () => {
+sequelize.sync({/*logging: true*/}).then(async () => {
   console.log('MySQL sync Done');
   // 如果user表中没有用户，创建一个默认用户
   const users = await db.user.findAndCountAll();

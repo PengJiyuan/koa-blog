@@ -65,3 +65,5 @@ package-lock.json
 # static files
 client/public
 
+# upload files
+upload/
