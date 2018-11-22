@@ -7,16 +7,26 @@ class BlogController {
   // 博客列表
   static async getList(ctx) {
     const { id } = ctx.request.query;
-    if (id) {
-      ctx.body = {
-        blog: await Blog.findOne({
-          where: {
-            id
-          }
-        })
-      }
+    if (!ctx.state.user) {
+      ctx.body = [];
     } else {
-      ctx.body = await Blog.findAll();
+      const userId = ctx.state.user.id;
+      if (id) {
+        ctx.body = {
+          blog: await Blog.findOne({
+            where: {
+              id,
+              user_id: userId
+            }
+          })
+        }
+      } else {
+        ctx.body = await Blog.findAll({
+          where: {
+            user_id: userId
+          }
+        });
+      }
     }
   }
 

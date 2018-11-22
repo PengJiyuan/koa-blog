@@ -36,19 +36,25 @@ function routeBlog(router) {
   router.post('/api/uploadFile', upload.single('file'), apiBlog.uploadFile);
 
   async function blog(ctx) {
-    switch(ctx.path) {
-      // 必须登录才能发表
-      case '/blog/publish':
-      case '/blog/update':
-        if (ctx.isUnauthenticated()) {
-          ctx.redirect('/');
-        } else {
-          await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
-        }
-        break;
-      default:
-        await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
-        break;
+    // switch(ctx.path) {
+    //   // 必须登录才能发表
+    //   case '/blog/publish'
+    //   case '/blog/publish':
+    //   case '/blog/update':
+    //     if (ctx.isUnauthenticated()) {
+    //       ctx.redirect('/login');
+    //     } else {
+    //       await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+    //     }
+    //     break;
+    //   default:
+    //     await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+    //     break;
+    // }
+    if (ctx.isUnauthenticated()) {
+      ctx.redirect('/login');
+    } else {
+      await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
     }
   }
 }

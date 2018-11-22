@@ -28,6 +28,7 @@ class Navbar extends React.Component {
     return (
       <nav className="nav">
         <div className="left">
+          <h1>布洛格</h1>
         </div>
         <div className="right">
           {
