@@ -21,7 +21,7 @@ const themer = lessToJs(fs.readFileSync(path.join(__dirname, './theme/index.less
 
 const webpackConfig = {
 
-  mode: 'development',
+  mode: 'production',
 
   context: __dirname,
 
@@ -104,11 +104,11 @@ const webpackConfig = {
         }
       }
     },
-    // minimizer: [
-    //   new UglifyJSPlugin({
-    //     parallel: os.cpus().length
-    //   })
-    // ]
+    minimizer: [
+      new UglifyJSPlugin({
+        parallel: os.cpus().length
+      })
+    ]
   },
 
   plugins: [
@@ -124,9 +124,7 @@ const webpackConfig = {
       path.resolve(__dirname),
       'node_modules'
     ]
-  },
-
-  watch: true
+  }
 };
 
 const pluginHtmls = Object.keys(entry).map(id => new HtmlWebpackPlugin({
