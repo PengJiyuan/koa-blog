@@ -6,16 +6,18 @@ const config = require('../../../config/config');
 class BlogController {
   // 博客列表
   static async getList(ctx) {
-    ctx.body = await Blog.findAll();
-  }
-
-  // 根据id获取博客内容
-  static async getBlogById(ctx) {
-    const id = ctx.params.id;
-    const blog = await Blog.findByPk(id);
-    ctx.body = {
-      blog
-    };
+    const { id } = ctx.request.query;
+    if (id) {
+      ctx.body = {
+        blog: await Blog.findOne({
+          where: {
+            id
+          }
+        })
+      }
+    } else {
+      ctx.body = await Blog.findAll();
+    }
   }
 
   // 发布博客

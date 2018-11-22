@@ -31,7 +31,6 @@ function routeBlog(router) {
   router.get('/api/blog', apiBlog.getList);
   // 删除博客
   router.delete('/api/blog', apiBlog.deleteBlog);
-  router.get('/api/blog/:id', apiBlog.getBlogById);
   router.post('/api/publish', apiBlog.publishBlog);
   router.put('/api/publish', apiBlog.updateBlog);
   router.post('/api/uploadFile', upload.single('file'), apiBlog.uploadFile);

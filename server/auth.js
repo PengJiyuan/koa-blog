@@ -13,7 +13,14 @@ function initPassport(app) {
   
   passport.deserializeUser(async function(id, done) {
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findOne({
+        where: {
+          id
+        },
+        attributes: {
+          exclude: ['password']
+        }
+      });
       done(null, user);
     } catch(err) {
       done(err);

@@ -5,7 +5,7 @@ const router = require('koa-router')();
 function initRoutes(app) {
   // 只有登录之后的用户才可以进行发表博客
   router.use(['/api/publish'], async(ctx, next) => {
-    if (ctx.state.user) {
+    if (ctx.isAuthenticated()) {
       await next();
     } else {
       ctx.status = 403;

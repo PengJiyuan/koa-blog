@@ -1,0 +1,52 @@
+@import '~antd/dist/antd.css';
+@import '~braft-editor/dist/index.css';
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#container {
+  width: 100%;
+  height: 100%;
+  .main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 50px;
+      color: #e7eef2;
+      background-color: #444444;
+      .right {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+        .right-wrapper {
+          display: flex;
+          > div {
+            padding: 0 16px;
+          }
+        }
+      }
+    }
+    > .content {
+      display: flex;
+      flex: 1;
+      padding: 16px 32px;
+      box-sizing: border-box;
+    }
+  }
+}

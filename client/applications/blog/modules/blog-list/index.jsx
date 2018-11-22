@@ -15,7 +15,6 @@ class BlogList extends React.Component {
   }
 
   componentDidMount() {
-    const { store } = this.context;
     this.props.updateList();
   }
 

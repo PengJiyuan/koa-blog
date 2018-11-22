@@ -1,8 +1,8 @@
-import { UPDATE_LIST } from './action-type';
+import { USER_LIST } from './action-type';
 
-export const blogList = (state = {list: [], loading: true}, action) => {
+export const userList = (state = {list: [], loading: true}, action) => {
   switch (action.type) {
-    case UPDATE_LIST:
+    case USER_LIST:
       return {
         list: action.list || [],
         loading: action.loading
