@@ -88,7 +88,7 @@ class BlogController {
     };
   }
 
-  static async uploadAvatar(ctx) {
+  static async uploadCover(ctx) {
     const file = ctx.req.file;
     const url = `/upload/${file.filename}`;
     ctx.body = {

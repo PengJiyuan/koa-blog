@@ -33,11 +33,9 @@ class BlogPublish extends React.Component {
         title: values.title,
         introduction: values.introduction,
         mediaPrefix: this.state.uuid,
-        cover: values.avatar.file.response.url,
+        cover: values.cover.file.response.url,
         body: values.body.toHTML()
       };
-
-      console.log(data);
 
       if (!err) {
         request.publish(data).then((res) => {
@@ -51,7 +49,6 @@ class BlogPublish extends React.Component {
   }
 
   handleUploadFile = (info) => {
-    console.log(info)
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
       return;
@@ -112,18 +109,18 @@ class BlogPublish extends React.Component {
           {...formItemLayout}
             label="封面图"
           >
-            {getFieldDecorator('avatar', {
+            {getFieldDecorator('cover', {
               valuePropName: 'file'
             })(
               <Upload
-                name="avatar"
-                action="/api/uploadAvatar"
+                name="cover"
+                action="/api/uploadCover"
                 listType="picture-card"
                 showUploadList={false}
                 onChange={this.handleUploadFile}
               >
                 {
-                  imageUrl ? <img src={imageUrl} alt="avatar" /> : <Icon style={{fontSize: 24}} type={this.state.loading ? 'loading' : 'upload'} />
+                  imageUrl ? <img height="100" src={imageUrl} alt="cover" /> : <Icon style={{fontSize: 24}} type={this.state.loading ? 'loading' : 'upload'} />
                 }
               </Upload>
             )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Upload, Icon } from 'antd';
 import BraftEditor from 'braft-editor';
 import history from 'libs/history';
 import uploadFn from 'libs/upload';
@@ -14,7 +14,8 @@ class BlogPublish extends React.Component {
     super(props);
 
     this.state = {
-      uuid: ''
+      uuid: '',
+      imageUrl: ''
     };
   }
 
@@ -24,12 +25,14 @@ class BlogPublish extends React.Component {
       request.getBlogById(pathList[2]).then((res) => {
         const blog = res.blog;
         this.setState({
-          uuid: blog.mediaPrefix
+          uuid: blog.mediaPrefix,
+          imageUrl: blog.cover
         });
         this.props.form.setFieldsValue({
           title: blog.title,
           introduction: blog.introduction,
-          body: BraftEditor.createEditorState(blog.body)
+          cover: blog.cover,
+          body: BraftEditor.createEditorState(blog.body),
         });
       });
     }
@@ -41,14 +44,13 @@ class BlogPublish extends React.Component {
       const data = {
         title: values.title,
         introduction: values.introduction,
-        body: values.body.toHTML()
+        body: values.body.toHTML(),
+        cover: typeof values.cover === 'string' ? values.cover : values.cover.file.response.url
       };
-
-      console.log(data);
 
       if (!err) {
         const pathList = history.getPathList();
-        request.updateBlog(pathList[2], values).then((res) => {
+        request.updateBlog(pathList[2], data).then((res) => {
           message.info('博客修改成功', 1.5)
             .then(() => {
               history.push('/');
@@ -58,8 +60,22 @@ class BlogPublish extends React.Component {
     });
   }
 
+  handleUploadFile = (info) => {
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      const imageUrl = info.file.response.url;
+      this.setState({
+        imageUrl,
+        loading: false
+      })
+    }
+  }
+
   render() {
-    const { uuid } = this.state;
+    const { uuid, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -99,6 +115,26 @@ class BlogPublish extends React.Component {
                 </TextArea>
               )
             }
+          </FormItem>
+          <FormItem
+          {...formItemLayout}
+            label="封面图"
+          >
+            {getFieldDecorator('cover', {
+              valuePropName: 'file'
+            })(
+              <Upload
+                name="cover"
+                action="/api/uploadCover"
+                listType="picture-card"
+                showUploadList={false}
+                onChange={this.handleUploadFile}
+              >
+                {
+                  imageUrl ? <img height="100" src={imageUrl} alt="cover" /> : <Icon style={{fontSize: 24}} type={this.state.loading ? 'loading' : 'upload'} />
+                }
+              </Upload>
+            )}
           </FormItem>
           <FormItem
             {...formItemLayout}

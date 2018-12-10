@@ -26,6 +26,7 @@ const maxAge = 365 * 24 * 60 * 60;
 
 app.use(mount('/views', serve(path.resolve(__dirname, '../client/public/views')), { maxAge }));
 app.use(mount('/upload', serve(path.resolve(__dirname, '../upload')), { maxAge }));
+app.use(mount('/assets', serve(path.resolve(__dirname, '../assets')), { maxAge }));
 
 // sessions
 app.keys = ['your-session-secret'];

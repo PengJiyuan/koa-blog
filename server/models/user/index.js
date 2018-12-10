@@ -19,6 +19,11 @@ function model(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       comment: '密码'
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      defaultValue: `/assets/avatar/default${Math.ceil(Math.random()*4)}.jpeg`,
+      comment: '头像'
     }
   }, {
     paranoid: false,

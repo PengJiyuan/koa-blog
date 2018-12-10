@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateList } from './store/action';
-import { Table, Button } from 'antd';
+import { Table, Button, Avatar } from 'antd';
 import Wrapper from '../../components/wrapper';
 import request from './request';
 import popCreateUser from './pop/create_user/index';
@@ -24,6 +24,11 @@ class UserList extends React.Component {
     dataIndex: 'username',
     key: 'username',
     render: text => <a href="javascript:;">{text}</a>
+  }, {
+    title: '头像',
+    dataIndex: 'avatar',
+    key: 'avatar',
+    render: text => <Avatar src={text} />
   }, {
     title: 'ID',
     dataIndex: 'id',

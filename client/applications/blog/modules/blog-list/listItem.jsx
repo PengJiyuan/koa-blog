@@ -33,7 +33,7 @@ class ListItem extends React.Component {
 
   render() {
     const { blog } = this.props;
-    const auth = window.userInfo;
+    const user = window.userInfo;
     return (
       <li>
         <Card
@@ -51,7 +51,7 @@ class ListItem extends React.Component {
           hoverable
         >
           <Meta
-            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+            avatar={<Avatar src={user.avatar} />}
             title={blog.title}
             description={blog.introduction}
             onClick={this.onRoute.bind(this, blog.id)}
