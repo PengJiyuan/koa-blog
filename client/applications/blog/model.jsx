@@ -6,6 +6,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import history from 'libs/history';
+import Footer from 'components/footer';
 import NavBar from './components/navbar';
 import BlogList from './modules/blog-list';
 import BlogPublish from './modules/blog-publish';
@@ -43,6 +44,7 @@ class Model extends React.Component {
               <Route path="/blog/list/:id" component={BlogDetail} />
               <Redirect to="/blog/list" />
             </Switch>
+            <Footer />
           </div>
         </div>
       </Router>

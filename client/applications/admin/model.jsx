@@ -6,6 +6,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import history from 'libs/history';
+import Footer from 'components/footer';
 import NavBar from './components/navbar';
 import UserList from './modules/user-list';
 
@@ -29,6 +30,7 @@ class Model extends React.Component {
               <Route path="/admin/userlist" component={UserList} />
               <Redirect to="/admin/userlist" />
             </Switch>
+            <Footer />
           </div>
         </div>
       </Router>
