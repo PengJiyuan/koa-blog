@@ -67,3 +67,5 @@ client/public
 
 # upload files
 upload/
+
+.stylelintcache
