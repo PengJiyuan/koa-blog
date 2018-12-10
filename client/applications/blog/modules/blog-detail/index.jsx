@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getBlogById } from './store/action';
 import { Spin } from 'antd';
-import request from './request';
 import history from 'libs/history';
+import { getBlogById } from './store/action';
 import './style/index.less';
 
 class BlogDetail extends React.Component {
@@ -11,7 +10,7 @@ class BlogDetail extends React.Component {
     super(props);
 
     this.state = {
-    }
+    };
   }
 
   componentDidMount() {

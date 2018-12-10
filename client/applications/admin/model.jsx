@@ -3,9 +3,8 @@ import {
   Router,
   Switch,
   Route,
-  Link,
   Redirect
-} from "react-router-dom";
+} from 'react-router-dom';
 import history from 'libs/history';
 import NavBar from './components/navbar';
 import UserList from './modules/user-list';
@@ -15,12 +14,12 @@ class Model extends React.Component {
     super(props);
 
     this.state = {
-      auth: window.userInfo
+      // auth: window.userInfo
     };
   }
 
   render() {
-    const { auth } = this.state;
+    // const { auth } = this.state;
     return (
       <Router history={history}>
         <div className="main">

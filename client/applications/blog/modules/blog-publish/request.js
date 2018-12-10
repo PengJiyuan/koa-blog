@@ -6,4 +6,4 @@ export default {
       body: data
     });
   }
-}
+};

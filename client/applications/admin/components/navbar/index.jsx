@@ -7,7 +7,7 @@ class Navbar extends React.Component {
   }
 
   logout = () => {
-    request.logout().then(res => {
+    request.logout().then((res) => {
       window.location = '/';
     });
   }
@@ -16,8 +16,7 @@ class Navbar extends React.Component {
     const username = window.userInfo && window.userInfo.username;
     return (
       <nav className="nav">
-        <div className="left">
-        </div>
+        <div className="left" />
         <div className="right">
           {
             username ? <div className="right-wrapper">

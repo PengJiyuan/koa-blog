@@ -5,6 +5,6 @@ export default {
     return fetch.get('/api/blog');
   },
   deleteBlog(id) {
-    return fetch.delete(`/api/blog?id=${id}`)
+    return fetch.delete(`/api/blog?id=${id}`);
   }
-}
+};

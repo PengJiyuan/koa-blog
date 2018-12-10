@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Base from './base';
 import history from 'libs/history';
+import Base from './base';
 
 function modal(props) {
   const doc = document;

@@ -35,10 +35,10 @@ export default function myUploadFn(param) {
     });
   };
 
-  xhr.upload.addEventListener("progress", progressFn, false);
-  xhr.addEventListener("load", successFn, false);
-  xhr.addEventListener("error", errorFn, false);
-  xhr.addEventListener("abort", errorFn, false);
+  xhr.upload.addEventListener('progress', progressFn, false);
+  xhr.addEventListener('load', successFn, false);
+  xhr.addEventListener('error', errorFn, false);
+  xhr.addEventListener('abort', errorFn, false);
 
   fd.append('uuid', this.state.uuid);
   fd.append('file', param.file);

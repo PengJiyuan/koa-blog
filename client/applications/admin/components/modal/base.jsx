@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form } from 'antd';
+import { Modal } from 'antd';
 
 class MyModal extends React.Component {
   state = {
@@ -38,7 +38,9 @@ class MyModal extends React.Component {
   modalRef = React.createRef();
 
   render() {
-    const { root, title, width, Content } = this.props;
+    const {
+      root, title, width, Content
+    } = this.props;
     const { visible, loading } = this.state;
     return (
       <Modal
@@ -55,7 +57,7 @@ class MyModal extends React.Component {
       >
         <Content ref={this.modalRef} />
       </Modal>
-    )
+    );
   }
 }
 

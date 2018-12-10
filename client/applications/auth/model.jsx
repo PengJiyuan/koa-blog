@@ -15,7 +15,7 @@ class Model extends React.Component {
       userName: '',
       password: '',
       error: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -42,7 +42,7 @@ class Model extends React.Component {
     };
     request.login(data).then((res) => {
       window.location = '/';
-    }).catch(err => {
+    }).catch((err) => {
       this.setState({
         error: true
       });
@@ -54,7 +54,7 @@ class Model extends React.Component {
     const suffix = userName ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
       <div className="app-auth">
-        <header className="header"></header>
+        <header className="header" />
         <main className="content">
           <div className="input-wrapper">
             <Input
@@ -78,7 +78,7 @@ class Model extends React.Component {
             <Button onClick={this.onSubmit} type="primary">登录</Button>
           </div>
         </main>
-        <footer className="footer"></footer>
+        <footer className="footer" />
       </div>
     );
   }

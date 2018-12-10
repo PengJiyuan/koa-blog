@@ -6,12 +6,12 @@ function initPassport(app) {
   passport.serializeUser((user, done) => {
     try {
       done(null, user.id);
-    } catch(err) {
+    } catch (err) {
       done(err);
     }
   });
-  
-  passport.deserializeUser(async function(id, done) {
+
+  passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findOne({
         where: {
@@ -22,21 +22,21 @@ function initPassport(app) {
         }
       });
       done(null, user);
-    } catch(err) {
+    } catch (err) {
       done(err);
     }
   });
-  
+
   const LocalStrategy = require('passport-local').Strategy;
   passport.use(new LocalStrategy(async (username, password, done) => {
-    const user = await User.findOne({ where: {username} });
+    const user = await User.findOne({ where: { username } });
     if (user && username === user.username && password === user.password) {
       done(null, user);
     } else {
       done(null, false);
     }
   }));
-  
+
   app.use(passport.initialize());
   app.use(passport.session());
 }

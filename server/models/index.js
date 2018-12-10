@@ -6,7 +6,7 @@ const db = {};
 
 fs.readdirSync(path.join(__dirname))
   .filter(dir => dir !== 'index.js')
-  .forEach(app => {
+  .forEach((app) => {
     const models = fs.statSync(path.join(__dirname, app));
     if (models.isDirectory()) {
       const model = require(path.join(__dirname, app))(sequelize, sequelize.Sequelize);
@@ -17,12 +17,12 @@ fs.readdirSync(path.join(__dirname))
 db.sequelize = sequelize;
 // alter: true
 // SequelizeDatabaseError: Too many keys specified; max 64 keys allowed
-sequelize.sync({/*logging: true*/}).then(async () => {
+sequelize.sync({/* logging: true */}).then(async () => {
   console.log('MySQL sync Done');
   // 如果user表中没有用户，创建一个默认用户
   const users = await db.user.findAndCountAll();
   if (users.count < 1) {
-    await db.user.create({username: 'peng', password: '1234', admin: 1});
+    await db.user.create({ username: 'peng', password: '1234', admin: 1 });
     console.log('Create default user success!');
   }
 }).catch(console.error);

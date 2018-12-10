@@ -4,4 +4,4 @@ export default {
   logout() {
     return fetch.get('/api/logout');
   }
-}
+};

@@ -22,7 +22,7 @@ function model(sequelize, DataTypes) {
     },
     avatar: {
       type: DataTypes.STRING,
-      defaultValue: `/assets/avatar/default${Math.ceil(Math.random()*4)}.jpeg`,
+      defaultValue: `/assets/avatar/default${Math.ceil(Math.random() * 4)}.jpeg`,
       comment: '头像'
     }
   }, {

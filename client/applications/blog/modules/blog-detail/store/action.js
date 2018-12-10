@@ -1,8 +1,8 @@
 import { UPDATE_BLOG } from './action-type';
 import request from '../request';
 
-export const getBlogById = (id) => async dispatch => {
-  try{
+export const getBlogById = id => async (dispatch) => {
+  try {
     dispatch({
       type: UPDATE_BLOG,
       blog: {},
@@ -14,7 +14,7 @@ export const getBlogById = (id) => async dispatch => {
       blog,
       loading: false
     });
-  } catch(err) {
+  } catch (err) {
     console.error(err);
   }
-}
+};

@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Table, Avatar } from 'antd';
 import { updateList } from './store/action';
-import { Table, Button, Avatar } from 'antd';
 import Wrapper from '../../components/wrapper';
-import request from './request';
 import popCreateUser from './pop/create_user/index';
 import './style/index.less';
 
@@ -12,7 +11,7 @@ class UserList extends React.Component {
     super(props);
 
     this.state = {
-    }
+    };
   }
 
   componentDidMount() {
@@ -37,7 +36,7 @@ class UserList extends React.Component {
     title: '是否为管理员',
     dataIndex: 'admin',
     key: 'admin',
-    render: text => text ? <span style={{color: 'orange'}}>是</span> : '不是'
+    render: text => (text ? <span style={{ color: 'orange', }}>是</span> : '不是')
   }, {
     title: '创建时间',
     key: 'created_at',
@@ -45,12 +44,12 @@ class UserList extends React.Component {
   }];
 
   btns = [{
-    name: "创建用户",
+    name: '创建用户',
     key: 'create_user'
   }];
 
   onClickBtnList = (key) => {
-    switch(key) {
+    switch (key) {
       case 'create_user':
         popCreateUser(this.refresh);
         break;

@@ -1,20 +1,14 @@
 import React from 'react';
 import { Form, Input, Button, message, Upload, Icon } from 'antd';
+import uuid from 'uuid';
 import BraftEditor from 'braft-editor';
+import uploadFn from 'libs/upload';
 import history from 'libs/history';
 import request from './request';
-import uploadFn from 'libs/upload';
-import uuid from 'uuid';
 import './style/index.less';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
 
 class BlogPublish extends React.Component {
   constructor(props) {
@@ -58,13 +52,13 @@ class BlogPublish extends React.Component {
       this.setState({
         imageUrl,
         loading: false
-      })
+      });
     }
   }
 
 
   render() {
-    const { uuid, imageUrl } = this.state;
+    const { imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -82,9 +76,7 @@ class BlogPublish extends React.Component {
                 rules: [
                   { required: true, message: '请输入标题!' },
                 ],
-              })(
-                <Input placeholder="请输入标题" />
-              )
+              })(<Input placeholder="请输入标题" />)
             }
           </FormItem>
           <FormItem
@@ -96,34 +88,29 @@ class BlogPublish extends React.Component {
                 rules: [
                   { required: true, message: '博客简介不能为空!' },
                 ],
-              })(
-                <TextArea
-                  rows={4}
-                  placeholder="请输入简介内容"
-                >
-                </TextArea>
-              )
+              })(<TextArea
+                rows={4}
+                placeholder="请输入简介内容"
+              />)
             }
           </FormItem>
           <FormItem
-          {...formItemLayout}
+            {...formItemLayout}
             label="封面图"
           >
             {getFieldDecorator('cover', {
               valuePropName: 'file'
-            })(
-              <Upload
-                name="cover"
-                action="/api/uploadCover"
-                listType="picture-card"
-                showUploadList={false}
-                onChange={this.handleUploadFile}
-              >
-                {
-                  imageUrl ? <img height="100" src={imageUrl} alt="cover" /> : <Icon style={{fontSize: 24}} type={this.state.loading ? 'loading' : 'upload'} />
-                }
-              </Upload>
-            )}
+            })(<Upload
+              name="cover"
+              action="/api/uploadCover"
+              listType="picture-card"
+              showUploadList={false}
+              onChange={this.handleUploadFile}
+            >
+              {
+                  imageUrl ? <img height="100" src={imageUrl} alt="cover" /> : <Icon style={{ fontSize: 24, }} type={this.state.loading ? 'loading' : 'upload'} />
+              }
+            </Upload>)}
           </FormItem>
           <FormItem
             {...formItemLayout}
@@ -134,13 +121,11 @@ class BlogPublish extends React.Component {
                 rules: [
                   { required: true, message: '博客内容不能为空!' },
                 ],
-              })(
-                <BraftEditor
-                  className="my-editor"
-                  media={{uploadFn: uploadFn.bind(this)}}
-                  placeholder="请输入正文内容"
-                />
-              )
+              })(<BraftEditor
+                className="my-editor"
+                media={{ uploadFn: uploadFn.bind(this) }}
+                placeholder="请输入正文内容"
+              />)
             }
           </FormItem>
           <FormItem

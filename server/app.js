@@ -11,7 +11,10 @@ const session = require('koa-session');
 const config = require('./config/config');
 
 const Koa = require('koa');
-const app = module.exports = new Koa();
+
+const app = new Koa();
+
+module.exports = app;
 
 // middleware
 

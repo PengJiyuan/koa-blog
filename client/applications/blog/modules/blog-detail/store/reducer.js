@@ -1,6 +1,6 @@
 import { UPDATE_BLOG } from './action-type';
 
-export const blogContent = (state = {detail: {}, loading: true}, action) => {
+export const blogContent = (state = { detail: {}, loading: true }, action) => {
   switch (action.type) {
     case UPDATE_BLOG:
       return {
@@ -10,4 +10,4 @@ export const blogContent = (state = {detail: {}, loading: true}, action) => {
     default:
       return state;
   }
-}
+};

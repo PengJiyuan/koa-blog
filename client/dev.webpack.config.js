@@ -4,8 +4,8 @@
 const path = require('path');
 const fs = require('fs');
 const autoprefixer = require('autoprefixer');
-const os = require('os');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const os = require('os');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const lessToJs = require('less-var-parse');
@@ -28,7 +28,7 @@ const webpackConfig = {
   entry,
 
   output: {
-    path: path.resolve(__dirname, `public/views/`),
+    path: path.resolve(__dirname, 'public/views/'),
     filename: '[name].min.js',
     publicPath: '/views'
   },
@@ -137,7 +137,7 @@ const pluginHtmls = Object.keys(entry).map(id => new HtmlWebpackPlugin({
   userInfo: '<%- JSON.stringify(userInfo) %>',
   chunks: ['dll', id],
   inject: true,
-  template: path.resolve(__dirname, `views/base.ejs`)
+  template: path.resolve(__dirname, 'views/base.ejs')
 }));
 
 webpackConfig.plugins = webpackConfig.plugins.concat(pluginHtmls);

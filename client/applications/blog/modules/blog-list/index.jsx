@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import { updateList } from './store/action';
 import ListItem from './listItem';
-import request from './request';
 import './style/index.less';
 
 class BlogList extends React.Component {
@@ -11,7 +10,7 @@ class BlogList extends React.Component {
     super(props);
 
     this.state = {
-    }
+    };
   }
 
   componentDidMount() {
@@ -26,7 +25,7 @@ class BlogList extends React.Component {
         {
           blogList.loading ? <div className="loading"><Spin /></div> : <ul className="list-wrapper">
             {
-              blogList.list && blogList.list.map((blog) => <ListItem key={blog.id} blog={blog} />)
+              blogList.list && blogList.list.map(blog => <ListItem key={blog.id} blog={blog} />)
             }
           </ul>
         }

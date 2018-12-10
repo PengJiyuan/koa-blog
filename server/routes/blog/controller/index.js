@@ -19,7 +19,7 @@ class BlogController {
               user_id: userId
             }
           })
-        }
+        };
       } else {
         ctx.body = await Blog.findAll({
           where: {

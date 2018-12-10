@@ -1,6 +1,6 @@
 import { USER_LIST } from './action-type';
 
-export const userList = (state = {list: [], loading: true}, action) => {
+export const userList = (state = { list: [], loading: true }, action) => {
   switch (action.type) {
     case USER_LIST:
       return {
@@ -10,4 +10,4 @@ export const userList = (state = {list: [], loading: true}, action) => {
     default:
       return state;
   }
-}
+};

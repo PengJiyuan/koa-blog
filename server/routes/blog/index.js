@@ -12,7 +12,7 @@ const storageImages = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const u = req.body.uuid;
-    fs.mkdirp(path.join(uploadPath, 'blog-images', u), err => {
+    fs.mkdirp(path.join(uploadPath, 'blog-images', u), (err) => {
       if (err) {
         cb(err);
       } else {
@@ -29,7 +29,7 @@ const storageCover = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    fs.mkdirp(path.join(uploadPath, 'cover'), err => {
+    fs.mkdirp(path.join(uploadPath, 'cover'), (err) => {
       if (err) {
         cb(err);
       } else {
@@ -39,10 +39,9 @@ const storageCover = multer.diskStorage({
   }
 });
 
-const uploadCover = multer({ storage: storageCover});
+const uploadCover = multer({ storage: storageCover });
 
 function routeBlog(router) {
-
   router.get('/', blog);
   router.get('/blog/(.*)', blog);
   router.get('/api/blog', apiBlog.getList);
@@ -72,7 +71,7 @@ function routeBlog(router) {
     if (ctx.isUnauthenticated()) {
       ctx.redirect('/login');
     } else {
-      await ctx.render('../../client/public/views/blog/blog.ejs', {userInfo: ctx.state.user});
+      await ctx.render('../../client/public/views/blog/blog.ejs', { userInfo: ctx.state.user });
     }
   }
 }

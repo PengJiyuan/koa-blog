@@ -3,7 +3,7 @@
  * Promise
  */
 
-import {fetch as fetchPolyfill} from 'whatwg-fetch';
+import { fetch as fetchPolyfill } from 'whatwg-fetch';
 
 const _fetch = window.fetch ? window.fetch : fetchPolyfill;
 
@@ -28,14 +28,12 @@ function processData(data) {
   return data;
 }
 
-methods.forEach(method => {
+methods.forEach((method) => {
   request[method.toLowerCase()] = (url, options) => {
     if (method === 'get' || method === 'head') {
       delete options.body;
-    } else {
-      if (options && options.body) {
-        options.body = processData(options.body);
-      }
+    } else if (options && options.body) {
+      options.body = processData(options.body);
     }
     return _fetch(url, {
       credentials: 'same-origin',
@@ -45,17 +43,16 @@ methods.forEach(method => {
       ...options,
       method
     }).then(checkStatus)
-    .then(parseJSON);
-  }
+      .then(parseJSON);
+  };
 });
 
 function checkStatus(response) {
   console.log(response);
   if (response.status >= 200 && response.status < 300) {
     return response;
-  } else {
-    throw response;
   }
+  throw response;
 }
 
 function parseJSON(response) {

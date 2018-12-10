@@ -1,5 +1,4 @@
 const User = require('../../../models').user;
-const path = require('path');
 
 class UserController {
   // 用户列表
@@ -12,7 +11,7 @@ class UserController {
             id
           }
         })
-      }
+      };
     } else {
       ctx.body = await User.findAll();
     }

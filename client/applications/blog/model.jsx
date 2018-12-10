@@ -3,9 +3,8 @@ import {
   Router,
   Switch,
   Route,
-  Link,
   Redirect
-} from "react-router-dom";
+} from 'react-router-dom';
 import history from 'libs/history';
 import NavBar from './components/navbar';
 import BlogList from './modules/blog-list';

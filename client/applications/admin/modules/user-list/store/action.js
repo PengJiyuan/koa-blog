@@ -2,7 +2,7 @@ import { USER_LIST } from './action-type';
 import request from '../request';
 
 // 获取列表保存至store
-export const updateList = () => async dispatch => {
+export const updateList = () => async (dispatch) => {
   try {
     dispatch({
       type: USER_LIST,
@@ -14,7 +14,7 @@ export const updateList = () => async dispatch => {
       list,
       loading: false
     });
-  } catch(err) {
+  } catch (err) {
     console.error(err);
   }
 };

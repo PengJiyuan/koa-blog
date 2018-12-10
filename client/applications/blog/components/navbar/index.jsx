@@ -6,10 +6,10 @@ import logo from '../../assets/logo.gif';
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
-  } 
+  }
 
   logout = () => {
-    request.logout().then(res => {
+    request.logout().then((res) => {
       window.location = '/';
     });
   }
