@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import request from '../../request';
+import logo from '../../assets/logo.gif';
 
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
-  }
+  } 
 
   logout = () => {
     request.logout().then(res => {
@@ -28,7 +29,7 @@ class Navbar extends React.Component {
     return (
       <nav className="nav">
         <div className="left">
-          <h1>布洛格</h1>
+          <img alt="logo" src={logo} height="40" />
         </div>
         <div className="right">
           {

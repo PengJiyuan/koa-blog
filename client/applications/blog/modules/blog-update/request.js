@@ -7,7 +7,7 @@ export default {
     });
   },
   getBlogById(id) {
-    return fetch.get(`/api/blog/${id}`);
+    return fetch.get(`/api/blog?id=${id}`);
   },
   updateBlog(id, body) {
     return fetch.put(`/api/publish?id=${id}`, {

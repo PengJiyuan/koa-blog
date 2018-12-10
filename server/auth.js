@@ -30,7 +30,7 @@ function initPassport(app) {
   const LocalStrategy = require('passport-local').Strategy;
   passport.use(new LocalStrategy(async (username, password, done) => {
     const user = await User.findOne({ where: {username} });
-    if (username === user.username && password === user.password) {
+    if (user && username === user.username && password === user.password) {
       done(null, user);
     } else {
       done(null, false);

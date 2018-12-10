@@ -56,29 +56,26 @@ class Model extends React.Component {
       <div className="app-auth">
         <header className="header"></header>
         <main className="content">
-          <div className="left">登录</div>
-          <div className="right">
-            <div className="input-wrapper">
-              <Input
-                placeholder="请输入用户名"
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                suffix={suffix}
-                value={userName}
-                onChange={this.onChangeUserName}
-                ref={node => this.userNameInput = node}
-              />
-              <Input
-                type="password"
-                placeholder="请输入密码"
-                prefix={<Icon type="eye" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                value={password}
-                onChange={this.onChangePassword}
-              />
-              {
-                this.state.error ? <Alert message="账号密码不对" type="error" showIcon /> : null
-              }
-              <Button onClick={this.onSubmit} type="primary">登录</Button>
-            </div>
+          <div className="input-wrapper">
+            <Input
+              placeholder="请输入用户名"
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              suffix={suffix}
+              value={userName}
+              onChange={this.onChangeUserName}
+              ref={node => this.userNameInput = node}
+            />
+            <Input
+              type="password"
+              placeholder="请输入密码"
+              prefix={<Icon type="eye" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              value={password}
+              onChange={this.onChangePassword}
+            />
+            {
+              this.state.error ? <Alert message="账号密码不对" type="error" showIcon /> : null
+            }
+            <Button onClick={this.onSubmit} type="primary">登录</Button>
           </div>
         </main>
         <footer className="footer"></footer>

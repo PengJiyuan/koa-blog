@@ -66,7 +66,7 @@ class BlogController {
       }
     });
     // 删除对应博客的图片资源
-    fs.removeSync(path.resolve(config.uploadPath, deleteOne.mediaPrefix));
+    fs.removeSync(path.resolve(config.uploadPath, 'blog-images', deleteOne.mediaPrefix));
     await Blog.destroy({
       where: {
         id
@@ -84,6 +84,15 @@ class BlogController {
     ctx.body = {
       ...file,
       uuid,
+      url
+    };
+  }
+
+  static async uploadAvatar(ctx) {
+    const file = ctx.req.file;
+    const url = `/upload/${file.filename}`;
+    ctx.body = {
+      ...file,
       url
     };
   }

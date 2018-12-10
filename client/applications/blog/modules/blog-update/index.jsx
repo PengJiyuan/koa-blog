@@ -44,9 +44,11 @@ class BlogPublish extends React.Component {
         body: values.body.toHTML()
       };
 
+      console.log(data);
+
       if (!err) {
         const pathList = history.getPathList();
-        request.publish(pathList[2], values).then((res) => {
+        request.updateBlog(pathList[2], values).then((res) => {
           message.info('博客修改成功', 1.5)
             .then(() => {
               history.push('/');

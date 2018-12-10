@@ -6,23 +6,40 @@ const config = require('../../config/config');
 
 const uploadPath = config.uploadPath;
 
-const storage = multer.diskStorage({
+const storageImages = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const u = req.body.uuid;
-    fs.mkdirp(path.join(uploadPath, u), err => {
+    fs.mkdirp(path.join(uploadPath, 'blog-images', u), err => {
       if (err) {
         cb(err);
       } else {
-        cb(null, `${u}/${file.originalname}`);
+        cb(null, `blog-images/${u}/${file.originalname}`);
       }
     });
   }
 });
 
-const upload = multer({ storage });
+const uploadImages = multer({ storage: storageImages });
+
+const storageAvatar = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    fs.mkdirp(path.join(uploadPath, 'avatar'), err => {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, `avatar/${file.originalname}`);
+      }
+    });
+  }
+});
+
+const uploadAvatar = multer({ storage: storageAvatar });
 
 function routeBlog(router) {
 
@@ -33,7 +50,8 @@ function routeBlog(router) {
   router.delete('/api/blog', apiBlog.deleteBlog);
   router.post('/api/publish', apiBlog.publishBlog);
   router.put('/api/publish', apiBlog.updateBlog);
-  router.post('/api/uploadFile', upload.single('file'), apiBlog.uploadFile);
+  router.post('/api/uploadFile', uploadImages.single('file'), apiBlog.uploadFile);
+  router.post('/api/uploadAvatar', uploadAvatar.single('avatar'), apiBlog.uploadAvatar);
 
   async function blog(ctx) {
     // switch(ctx.path) {

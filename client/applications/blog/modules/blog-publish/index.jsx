@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Upload, Icon } from 'antd';
 import BraftEditor from 'braft-editor';
 import history from 'libs/history';
 import request from './request';
@@ -10,12 +10,19 @@ import './style/index.less';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 class BlogPublish extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      uuid: uuid.v4()
+      uuid: uuid.v4(),
+      loading: false
     };
   }
 
@@ -26,8 +33,11 @@ class BlogPublish extends React.Component {
         title: values.title,
         introduction: values.introduction,
         mediaPrefix: this.state.uuid,
+        cover: values.avatar.file.response.url,
         body: values.body.toHTML()
       };
+
+      console.log(data);
 
       if (!err) {
         request.publish(data).then((res) => {
@@ -40,8 +50,24 @@ class BlogPublish extends React.Component {
     });
   }
 
+  handleUploadFile = (info) => {
+    console.log(info)
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      const imageUrl = info.file.response.url;
+      this.setState({
+        imageUrl,
+        loading: false
+      })
+    }
+  }
+
+
   render() {
-    const { uuid } = this.state;
+    const { uuid, imageUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -81,6 +107,26 @@ class BlogPublish extends React.Component {
                 </TextArea>
               )
             }
+          </FormItem>
+          <FormItem
+          {...formItemLayout}
+            label="封面图"
+          >
+            {getFieldDecorator('avatar', {
+              valuePropName: 'file'
+            })(
+              <Upload
+                name="avatar"
+                action="/api/uploadAvatar"
+                listType="picture-card"
+                showUploadList={false}
+                onChange={this.handleUploadFile}
+              >
+                {
+                  imageUrl ? <img src={imageUrl} alt="avatar" /> : <Icon style={{fontSize: 24}} type={this.state.loading ? 'loading' : 'upload'} />
+                }
+              </Upload>
+            )}
           </FormItem>
           <FormItem
             {...formItemLayout}

@@ -34,6 +34,11 @@ function model(sequelize, DataTypes) {
       allowNull: false,
       comment: '博客内容'
     },
+    cover: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: '封面图'
+    },
     viewCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0,

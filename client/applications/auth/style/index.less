@@ -24,33 +24,18 @@ html, body {
     .content {
       display: flex;
       margin: 0 auto;
-      width: 800px;
       height: auto;
       overflow: hidden;
-      .left {
-        width: 320px;
-        height: 400px;
-        line-height: 400px;
-        text-align: center;
-        font-size: 30px;
-        border-right: 1px solid #283e51;
-      }
-      .right {
-        flex: 1;
-        padding: 20px 40px;
-        box-sizing: border-box;
-        overflow: hidden;
+      .input-wrapper {
+        margin-top: 80px;
+        padding: 0 20px;
+        > span,
+        > div {
+          margin-bottom: 20px;
+        }
 
-        .input-wrapper {
-          margin-top: 80px;
-          > span,
-          > div {
-            margin-bottom: 20px;
-          }
-  
-          button {
-            width: 100%;
-          }
+        button {
+          width: 100%;
         }
       }
     }
