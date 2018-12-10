@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Avatar, Icon } from 'antd';
 import request from '../../request';
-import logo from '../../assets/logo.gif';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -17,27 +17,33 @@ class Navbar extends React.Component {
   routes = [{
     url: '/blog/list',
     key: 'list',
-    name: '列表'
+    name: '列表',
+    icon: 'ordered-list'
   }, {
     url: '/blog/publish',
     key: 'publish',
-    name: '发布'
+    name: '发布',
+    icon: 'file-add'
   }];
 
   render() {
-    const username = window.userInfo && window.userInfo.username;
+    const user = window.userInfo;
+    const username = user && user.username;
+    const avatar = user && user.avatar;
     return (
       <nav className="nav">
         <div className="left">
-          <img alt="logo" src={logo} height="40" />
+          {
+            user && <Avatar alt="avatar" src={avatar} />
+          }
         </div>
         <div className="right">
           {
             username ? <div className="right-wrapper">
               {
-                this.routes.map(route => <div key={route.key}><Link to={route.url}>{route.name}</Link></div>)
+                this.routes.map(route => <div key={route.key}><Link to={route.url}><Icon style={{ marginRight: 4, }} type={route.icon} />{route.name}</Link></div>)
               }
-              <div>{`${username}, 欢迎您！`} <a onClick={this.logout}>注销</a></div>
+              <div><a onClick={this.logout}><Icon style={{ marginRight: 4, }} type="logout" />注销</a></div>
             </div> : <a href="/login">登录</a>
           }
         </div>
