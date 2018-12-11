@@ -1,7 +1,7 @@
 import fetch from 'libs/fetch';
 
 export default {
-  getUserList() {
+  getUser() {
     const user = window.userInfo;
     return fetch.get(`/api/users?id=${user.id}`);
   },

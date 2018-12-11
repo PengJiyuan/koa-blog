@@ -21,7 +21,7 @@ class UserProfile extends React.Component {
   }
 
   initData = () => {
-    request.getUserList().then((res) => {
+    request.getUser().then((res) => {
       const user = res.user;
       this.setState({
         loading: false,
