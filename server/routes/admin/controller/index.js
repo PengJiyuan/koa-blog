@@ -1,4 +1,5 @@
 const User = require('../../../models').user;
+const Settings = require('../../../models').settings;
 
 class UserController {
   // 用户列表
@@ -24,6 +25,10 @@ class UserController {
   static async createUser(ctx) {
     const body = ctx.request.body;
     const user = await User.create(body);
+    // 创建用户的同时生成用户默认配置单
+    await Settings.create({
+      user_id: user.id
+    });
     ctx.body = {
       user
     };

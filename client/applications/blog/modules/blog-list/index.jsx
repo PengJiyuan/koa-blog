@@ -24,9 +24,13 @@ class BlogList extends React.Component {
 
   render() {
     const { blogList } = this.props;
+    const user = window.userInfo;
+    const style = {
+      backgroundImage: `url(${user.setting.background_img})`,
+    };
 
     return (
-      <div className="module-blog-list">
+      <div className="module-blog-list" style={style}>
         {
           blogList.loading && <div className="loading"><Spin /></div>
         }

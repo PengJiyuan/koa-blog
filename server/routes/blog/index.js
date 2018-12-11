@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const multer = require('koa-multer');
 const config = require('../../config/config');
+const Settings = require('../../models').settings;
 
 const uploadPath = config.uploadPath;
 
@@ -71,7 +72,11 @@ function routeBlog(router) {
     if (ctx.isUnauthenticated()) {
       ctx.redirect('/login');
     } else {
-      await ctx.render('../../client/public/views/blog/blog.ejs', { userInfo: ctx.state.user });
+      const user = ctx.state.user.dataValues;
+      const userId = user.id;
+      const setting = await Settings.findOne({ where: { user_id: userId, } });
+      user.setting = setting.dataValues;
+      await ctx.render('../../client/public/views/blog/blog.ejs', { userInfo: user });
     }
   }
 }
