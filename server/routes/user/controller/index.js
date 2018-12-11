@@ -35,7 +35,29 @@ class UserController {
     };
   }
 
+  // 更新用户配置
+  static async updateSetting(ctx) {
+    const userId = ctx.request.query.user_id;
+    const { body } = ctx.request;
+    ctx.body = {
+      setting: await Settings.update(body, {
+        where: {
+          user_id: userId
+        }
+      })
+    };
+  }
+
   static async uploadAvatar(ctx) {
+    const file = ctx.req.file;
+    const url = `/upload/${file.filename}`;
+    ctx.body = {
+      ...file,
+      url
+    };
+  }
+
+  static async uploadBackgroundImg(ctx) {
     const file = ctx.req.file;
     const url = `/upload/${file.filename}`;
     ctx.body = {

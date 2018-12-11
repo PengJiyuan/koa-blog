@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Button, Upload, Icon } from 'antd';
-import request from '../profile/request';
+import { Form, Button, Upload, Icon, notification } from 'antd';
+import request from './request';
 import './style/index.less';
 
 const FormItem = Form.Item;
@@ -10,15 +10,21 @@ class UserSetting extends React.Component {
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
+      backgroundImgLoading: false
     };
   }
 
   componentDidMount() {
+    this.initData();
+  }
+
+  initData = () => {
     request.getUser().then((res) => {
       const setting = res.setting;
       this.setState({
         loading: false,
+        user: res.user,
         backgroundImgUrl: setting.background_img
       });
       this.props.form.setFieldsValue({
@@ -29,20 +35,21 @@ class UserSetting extends React.Component {
 
   handleUploadFile = (info) => {
     if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
+      this.setState({ backgroundImgLoading: true });
       return;
     }
     if (info.file.status === 'done') {
       const backgroundImgUrl = info.file.response.url;
       this.setState({
         backgroundImgUrl,
-        loading: false
+        backgroundImgLoading: false
       });
     }
   }
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { user } = this.state;
     this.props.form.validateFields((err, values) => {
       const data = {
         background_img: typeof values.background_img === 'string' ? values.background_img : values.background_img.file.response.url
@@ -50,15 +57,15 @@ class UserSetting extends React.Component {
 
       console.log(data);
 
-      // if (!err) {
-      //   request.updateUser(user.id, data).then((res) => {
-      //     notification.success({
-      //       message: '修改成功',
-      //       description: '用户信息修改成功'
-      //     });
-      //     this.initData();
-      //   }).catch(console.error);
-      // }
+      if (!err) {
+        request.updateSetting(user.id, data).then((res) => {
+          notification.success({
+            message: '修改成功',
+            description: '用户设置修改成功'
+          });
+          this.initData();
+        }).catch(console.error);
+      }
     });
   }
 
@@ -82,7 +89,7 @@ class UserSetting extends React.Component {
                   valuePropName: 'file'
                 })(<Upload
                   name="background_img"
-                  action="/api/uploadCover"
+                  action="/api/uploadBackgroundImg"
                   listType="picture-card"
                   showUploadList={false}
                   onChange={this.handleUploadFile}
@@ -90,7 +97,7 @@ class UserSetting extends React.Component {
                   {
                     backgroundImgUrl ?
                       <img height="100" src={backgroundImgUrl} alt="avatar" /> :
-                      <Icon style={{ fontSize: 24, }} type={this.state.loading ? 'loading' : 'upload'} />
+                      <Icon style={{ fontSize: 24, }} type={this.state.backgroundImgLoading ? 'loading' : 'upload'} />
                   }
                 </Upload>)}
               </FormItem>

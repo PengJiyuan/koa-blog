@@ -1,11 +1,12 @@
 import fetch from 'libs/fetch';
 
 export default {
-  getUserList() {
-    return fetch.get('/api/users');
+  getUser() {
+    const user = window.userInfo;
+    return fetch.get(`/api/users?id=${user.id}`);
   },
-  createUser(body) {
-    return fetch.post('/api/user/create', {
+  updateSetting(userId, body) {
+    return fetch.put(`/api/user/setting?user_id=${userId}`, {
       body
     });
   }
