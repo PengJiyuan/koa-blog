@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Icon } from 'antd';
+import { Avatar, Icon, Dropdown, Menu } from 'antd';
 import request from '../../request';
 
 class Navbar extends React.Component {
@@ -26,24 +26,47 @@ class Navbar extends React.Component {
     icon: 'file-add'
   }];
 
+  onClickMenu = ({ key }) => {
+    switch (key) {
+      case 'user':
+        window.location = '/user';
+        break;
+      case 'logout':
+        this.logout();
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     const user = window.userInfo;
     const username = user && user.username;
     const avatar = user && user.avatar;
+    const menu = (
+      <Menu onClick={this.onClickMenu}>
+        <Menu.Item key="user">
+          <Icon type="user" /> 个人中心
+        </Menu.Item>
+        <Menu.Item key="logout">
+          <Icon type="logout" /> 退出
+        </Menu.Item>
+      </Menu>
+    );
     return (
       <nav className="nav">
-        <div className="left">
-          {
-            user && <Avatar alt="avatar" src={avatar} />
-          }
-        </div>
+        <div className="left" />
         <div className="right">
           {
             username ? <div className="right-wrapper">
               {
                 this.routes.map(route => <div key={route.key}><Link to={route.url}><Icon style={{ marginRight: 4, }} type={route.icon} />{route.name}</Link></div>)
               }
-              <div><a onClick={this.logout}><Icon style={{ marginRight: 4, }} type="logout" />注销</a></div>
+              {
+                user && <div style={{ cursor: 'pointer', }}>
+                  <Dropdown overlay={menu}><Avatar alt="avatar" src={avatar} /></Dropdown>
+                </div>
+              }
             </div> : <a href="/login">登录</a>
           }
         </div>

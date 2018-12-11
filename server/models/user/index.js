@@ -10,6 +10,11 @@ function model(sequelize, DataTypes) {
       defaultValue: 0,
       comment: '是否为管理员'
     },
+    nickname: {
+      type: DataTypes.STRING,
+      unique: true,
+      comment: '昵称'
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,

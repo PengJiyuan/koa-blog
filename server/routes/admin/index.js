@@ -1,7 +1,7 @@
 const apiUser = require('./controller');
 
 function routeBlog(router) {
-  router.use(['/admin'], async (ctx, next) => {
+  router.use(['/admin', '/api/admin'], async (ctx, next) => {
     if (ctx.state.user && ctx.state.user.admin) {
       await next();
     } else {
@@ -11,8 +11,8 @@ function routeBlog(router) {
   });
 
   router.get('/admin(/?.*)', admin);
-  router.get('/api/users', apiUser.getList);
-  router.post('/api/user/create', apiUser.createUser);
+  router.get('/api/admin/users', apiUser.getList);
+  router.post('/api/admin/user/create', apiUser.createUser);
 
   async function admin(ctx) {
     await ctx.render('../../client/public/views/admin/admin.ejs', { userInfo: ctx.state.user });

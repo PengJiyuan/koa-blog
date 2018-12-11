@@ -9,11 +9,14 @@ class UserController {
         user: await User.findOne({
           where: {
             id
-          }
+          },
+          attributes: { exclude: ['password'] }
         })
       };
     } else {
-      ctx.body = await User.findAll();
+      ctx.body = await User.findAll({
+        attributes: { exclude: ['password'] }
+      });
     }
   }
 
