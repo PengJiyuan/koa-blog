@@ -2,7 +2,7 @@ const User = require('../../../models').user;
 const Settings = require('../../../models').settings;
 
 class UserController {
-  // 用户列表
+  // 获取用户信息
   static async getUser(ctx) {
     const { id } = ctx.request.query;
     const user = await User.findOne({
@@ -22,7 +22,7 @@ class UserController {
     };
   }
 
-  // 用户列表
+  // 更新用户
   static async updateUser(ctx) {
     const { id } = ctx.request.query;
     const { body } = ctx.request;
@@ -32,6 +32,15 @@ class UserController {
           id
         }
       })
+    };
+  }
+
+  static async uploadAvatar(ctx) {
+    const file = ctx.req.file;
+    const url = `/upload/${file.filename}`;
+    ctx.body = {
+      ...file,
+      url
     };
   }
 }

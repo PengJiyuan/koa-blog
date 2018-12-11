@@ -11,6 +11,7 @@ class UserProfile extends React.Component {
 
     this.state = {
       loading: true,
+      avatarLoading: false,
       user: {},
       avatarUrl: ''
     };
@@ -39,14 +40,14 @@ class UserProfile extends React.Component {
 
   handleUploadFile = (info) => {
     if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
+      this.setState({ avatarLoading: true });
       return;
     }
     if (info.file.status === 'done') {
       const avatarUrl = info.file.response.url;
       this.setState({
         avatarUrl,
-        loading: false
+        avatarLoading: false
       });
     }
   }
@@ -120,13 +121,13 @@ class UserProfile extends React.Component {
                   valuePropName: 'file'
                 })(<Upload
                   name="avatar"
-                  action="/api/uploadCover"
+                  action="/api/uploadAvatar"
                   listType="picture-card"
                   showUploadList={false}
                   onChange={this.handleUploadFile}
                 >
                   {
-                    avatarUrl ? <img height="100" src={avatarUrl} alt="avatar" /> : <Icon style={{ fontSize: 24, }} type={this.state.loading ? 'loading' : 'upload'} />
+                    avatarUrl ? <img height="100" src={avatarUrl} alt="avatar" /> : <Icon style={{ fontSize: 24, }} type={this.state.avatarLoading ? 'loading' : 'upload'} />
                   }
                 </Upload>)}
               </FormItem>
